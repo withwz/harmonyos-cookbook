@@ -95,6 +95,31 @@ struct Index {
             .padding(16)
             .backgroundColor(Color.White)
             .borderRadius(12)
+
+            // ArkTS 语法学习入口
+            Column({ space: 12 }) {
+              Text('📝')
+                .fontSize(32)
+              Text('语法学习')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+              Text('ArkTS vs TS')
+                .fontSize(12)
+                .fontColor('#999')
+
+              Button('开始学习')
+                .fontSize(12)
+                .width('100%')
+                .onClick(() => {
+                  router.pushUrl({
+                    url: 'pages/ArkTSSyntaxDemo'
+                  })
+                })
+            }
+            .layoutWeight(1)
+            .padding(16)
+            .backgroundColor(Color.White)
+            .borderRadius(12)
           }
           .width('100%')
         }
