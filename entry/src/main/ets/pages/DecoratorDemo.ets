@@ -27,7 +27,7 @@ struct DecoratorDemo {
     {
       title: '@Prop 演示',
       route: 'pages/PropDemo',
-      description: '父子单向数据同步 - 父传子只读'
+      description: '父子单向数据同步 - 可修改但不同步'
     },
     {
       title: '@Link 演示',
@@ -43,6 +43,11 @@ struct DecoratorDemo {
       title: '@Builder 演示',
       route: 'pages/BuilderDemo',
       description: '自定义构建函数 - UI 复用'
+    },
+    {
+      title: '@Builder vs @Component',
+      route: 'pages/BuilderVsComponent',
+      description: '构建函数与组件的区别对比'
     }
   ]
 

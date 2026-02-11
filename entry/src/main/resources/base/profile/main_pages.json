@@ -6,6 +6,14 @@
     "pages/PropDemo",
     "pages/LinkDemo",
     "pages/ObjectLinkDemo",
-    "pages/BuilderDemo"
+    "pages/BuilderDemo",
+    "pages/BuilderVsComponent",
+    "pages/LayoutDemo",
+    "pages/ColumnLayoutDemo",
+    "pages/RowLayoutDemo",
+    "pages/StackLayoutDemo",
+    "pages/GridLayoutDemo",
+    "pages/FlexLayoutDemo",
+    "pages/ListLayoutDemo"
   ]
 }

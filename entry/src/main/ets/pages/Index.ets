@@ -16,32 +16,59 @@ struct Index {
             this.message = 'Welcome'
           })
 
-        // 装饰器学习入口
-        Column({ space: 12 }) {
-          Text('鸿蒙装饰器学习')
-            .fontSize(20)
-            .fontWeight(FontWeight.Medium)
+        // 学习入口
+        Row({ space: 12 }) {
+          // 装饰器学习入口
+          Column({ space: 12 }) {
+            Text('🎨')
+              .fontSize(32)
+            Text('装饰器学习')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+            Text('State/Prop/Link等')
+              .fontSize(12)
+              .fontColor('#999')
 
-          Text('点击下方按钮开始学习 ArkTS 装饰器')
-            .fontSize(14)
-            .fontColor('#666666')
-
-          Button('开始学习 →')
-            .fontSize(16)
-            .width(200)
-            .height(44)
-            .backgroundColor('#007DFF')
-            .borderRadius(22)
-            .onClick(() => {
-              router.pushUrl({
-                url: 'pages/DecoratorDemo'
+            Button('开始学习')
+              .fontSize(12)
+              .width('100%')
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/DecoratorDemo'
+                })
               })
-            })
+          }
+          .layoutWeight(1)
+          .padding(16)
+          .backgroundColor(Color.White)
+          .borderRadius(12)
+
+          // 布局学习入口
+          Column({ space: 12 }) {
+            Text('📐')
+              .fontSize(32)
+            Text('布局学习')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+            Text('Column/Row/Grid等')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Button('开始学习')
+              .fontSize(12)
+              .width('100%')
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/LayoutDemo'
+                })
+              })
+          }
+          .layoutWeight(1)
+          .padding(16)
+          .backgroundColor(Color.White)
+          .borderRadius(12)
         }
-        .padding(24)
-        .backgroundColor(Color.White)
-        .borderRadius(16)
-        .shadow({ radius: 8, color: '#1F000000', offsetX: 0, offsetY: 2 })
+        .width('100%')
       }
       .width('100%')
       .padding(20)

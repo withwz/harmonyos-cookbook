@@ -5,20 +5,28 @@ import router from '@ohos.router'
  *
  * 核心概念：
  * - @Prop 用于父组件向子组件单向传递数据
- * - 子组件只能读取，不能修改父组件数据
+ * - 子组件可以修改 @Prop 变量，但修改不会同步到父组件
  * - 数据类型：boolean, string, number, 支持类型转换
  * - 初始化：必须从父组件接收
  */
 
-// ==================== 子组件1：只读显示 ====================
+// ==================== 子组件：@Prop 演示 ====================
 @Component
-struct UserCard {
+struct PropUserCard {
   @Prop userName: string = ''
   @Prop userAge: number = 0
 
   build() {
-    Row() {
-      Column({ space: 4 }) {
+    Column({ space: 12 }) {
+      // 标题
+      Text('@Prop 子组件')
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#007DFF')
+        .width('100%')
+
+      // 用户信息显示
+      Row({ space: 12 }) {
         Text(this.userName)
           .fontSize(18)
           .fontWeight(FontWeight.Medium)
@@ -27,90 +35,88 @@ struct UserCard {
           .fontSize(14)
           .fontColor('#666')
       }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
 
-      Text('只读')
-        .fontSize(12)
-        .fontColor('#999')
-        .padding({ left: 8, right: 8, top: 4, bottom: 4 })
-        .backgroundColor('#F0F0F0')
-        .borderRadius(4)
+      // 子组件内部修改按钮
+      Row({ space: 8 }) {
+        Button('改名')
+          .fontSize(12)
+          .onClick(() => {
+            // ⚠️ @Prop 可以修改，但只在子组件内部生效
+            this.userName = this.userName === '张三' ? '李四' : '张三'
+          })
+
+        Button('长大一岁')
+          .fontSize(12)
+          .onClick(() => {
+            this.userAge++
+          })
+      }
+
+      // 说明
+      Text('⚠️ 修改只在子组件内生效，父组件不受影响')
+        .fontSize(10)
+        .fontColor('#FF6B6B')
+        .width('100%')
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(Color.White)
+    .backgroundColor('#E6F7FF')
     .borderRadius(12)
   }
 }
 
-// ==================== 子组件2：计数卡片 ====================
+// ==================== 子组件：@Link 演示 ====================
 @Component
-struct CountCard {
-  @Prop count: number = 0
-  @Prop label: string = ''
+struct LinkUserCard {
+  @Link userName: string
+  @Link userAge: number
 
   build() {
-    Column({ space: 8 }) {
-      Text(this.label)
+    Column({ space: 12 }) {
+      // 标题
+      Text('@Link 子组件')
         .fontSize(14)
-        .fontColor('#666')
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#52C41A')
+        .width('100%')
 
-      Text(this.count.toString())
-        .fontSize(32)
-        .fontWeight(FontWeight.Bold)
-        .fontColor('#007DFF')
-
-      Text('子组件只能显示，无法修改')
-        .fontSize(12)
-        .fontColor('#999')
-    }
-    .width('100%')
-    .padding(20)
-    .backgroundColor('#F8F8F8')
-    .borderRadius(12)
-  }
-}
-
-// 定义产品接口
-interface ProductInfo {
-  name: string
-  price: number
-  inStock: boolean
-}
-
-// ==================== 子组件3：产品卡片 ====================
-@Component
-struct ProductCard {
-  @Prop name: string = ''
-  @Prop price: number = 0
-  @Prop inStock: boolean = true
-
-  build() {
-    Row() {
-      Column({ space: 4 }) {
-        Text(this.name)
-          .fontSize(16)
+      // 用户信息显示
+      Row({ space: 12 }) {
+        Text(this.userName)
+          .fontSize(18)
           .fontWeight(FontWeight.Medium)
 
-        Text(`¥${this.price.toFixed(2)}`)
+        Text(`${this.userAge}岁`)
           .fontSize(14)
-          .fontColor('#FF6B6B')
+          .fontColor('#666')
       }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
 
-      Text(this.inStock ? '有货' : '缺货')
-        .fontSize(12)
-        .fontColor(this.inStock ? '#52C41A' : '#999')
-        .padding({ left: 8, right: 8, top: 4, bottom: 4 })
-        .backgroundColor(this.inStock ? '#F6FFED' : '#F5F5F5')
-        .borderRadius(4)
+      // 子组件内部修改按钮
+      Row({ space: 8 }) {
+        Button('改名')
+          .fontSize(12)
+          .onClick(() => {
+            // ✅ @Link 修改会同步到父组件
+            this.userName = this.userName === '张三' ? '李四' : '张三'
+          })
+
+        Button('长大一岁')
+          .fontSize(12)
+          .onClick(() => {
+            this.userAge++
+          })
+      }
+
+      // 说明
+      Text('✅ 修改会同步到父组件')
+        .fontSize(10)
+        .fontColor('#52C41A')
+        .width('100%')
     }
     .width('100%')
-    .padding(12)
-    .backgroundColor(Color.White)
-    .borderRadius(8)
+    .padding(16)
+    .backgroundColor('#F6FFED')
+    .borderRadius(12)
   }
 }
 
@@ -118,37 +124,26 @@ struct ProductCard {
 @Entry
 @Component
 struct PropDemo {
-  @State currentCount: number = 0
   @State userName: string = '张三'
   @State userAge: number = 25
-  @State products: Array<ProductInfo> = []
-
-  aboutToAppear() {
-    this.products = [
-      { name: 'iPhone 15', price: 5999, inStock: true },
-      { name: 'MacBook Pro', price: 12999, inStock: true },
-      { name: 'AirPods Pro', price: 1999, inStock: false }
-    ]
-  }
 
   build() {
     Scroll() {
       Column({ space: 20 }) {
         this.BackButton()
         this.SectionTitle('@Prop 装饰器演示')
-        this.InfoCard('@Prop 实现父→子单向数据传递，子组件只读不可修改')
+        this.InfoCard('@Prop 传递值拷贝，@Link 传递引用')
 
-        // 示例1：用户信息卡片
-        this.UserCardSection()
+        // ==================== 核心对比演示 ====================
+        this.CompareSection()
 
-        // 示例2：计数显示
-        this.CounterSection()
+        // ==================== 行为说明 ====================
+        this.BehaviorSection()
 
-        // 示例3：产品列表
-        this.ProductListSection()
+        // ==================== 使用建议 ====================
+        this.RecommendationSection()
 
-        this.CompareCard()
-        this.TipCard('@Prop 要点：单向传递、子组件只读、适合数据展示场景')
+        this.TipCard('要点：@Prop 子组件可改但不同步，@Link 修改同步父组件')
       }
       .width('100%')
       .padding({ left: 16, right: 16, top: 20, bottom: 20 })
@@ -159,67 +154,104 @@ struct PropDemo {
   }
 
   @Builder
-  UserCardSection() {
-    Column({ space: 12 }) {
-      UserCard({
-        userName: this.userName,
-        userAge: this.userAge
-      })
+  CompareSection() {
+    Column({ space: 16 }) {
+      Text('核心对比：@Prop vs @Link')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
 
+      // 父组件数据显示
       Column({ space: 8 }) {
-        Text('父组件控制区（可修改）：')
-          .fontSize(12)
+        Text('父组件数据源')
+          .fontSize(14)
           .fontColor('#666')
 
+        Row({ space: 16 }) {
+          Column({ space: 4 }) {
+            Text('姓名')
+              .fontSize(12)
+              .fontColor('#999')
+            Text(this.userName)
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+          }
+
+          Column({ space: 4 }) {
+            Text('年龄')
+              .fontSize(12)
+              .fontColor('#999')
+            Text(`${this.userAge}岁`)
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+          }
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#FFFBE6')
+        .borderRadius(8)
+
+        // 父组件控制按钮
         Row({ space: 8 }) {
-          Button('改名')
+          Button('父组件改名')
+            .fontSize(12)
             .onClick(() => {
-              this.userName = this.userName === '张三' ? '李四' : '张三'
+              this.userName = this.userName === '张三' ? '张三' : '张三'
             })
 
-          Button('长大一岁')
+          Button('父组件重置')
+            .fontSize(12)
             .onClick(() => {
-              this.userAge++
+              this.userName = '张三'
+              this.userAge = 25
             })
         }
       }
-      .padding(12)
-      .backgroundColor('#FFFBE6')
-      .borderRadius(8)
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
-  }
+      .width('100%')
+      .padding(16)
+      .backgroundColor(Color.White)
+      .borderRadius(12)
 
-  @Builder
-  CounterSection() {
-    Column({ space: 12 }) {
+      // 对比显示
       Row({ space: 12 }) {
-        CountCard({ count: this.currentCount, label: '计数器A' })
-        CountCard({ count: this.currentCount, label: '计数器B' })
+        // @Prop 演示
+        PropUserCard({
+          userName: this.userName,
+          userAge: this.userAge
+        })
+        .layoutWeight(1)
+
+        // @Link 演示
+        LinkUserCard({
+          userName: $userName,
+          userAge: $userAge
+        })
+        .layoutWeight(1)
       }
       .width('100%')
+    }
+    .width('100%')
+  }
 
-      Row({ space: 8 }) {
-        Button('减少')
-          .onClick(() => {
-            this.currentCount--
-          })
+  @Builder
+  BehaviorSection() {
+    Column({ space: 12 }) {
+      Text('行为说明')
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
 
-        Text(`${this.currentCount}`)
-          .fontSize(20)
-          .width(60)
-          .textAlign(TextAlign.Center)
+      Column({ space: 12 }) {
+        this.BehaviorItem(
+          '@Prop 行为',
+          '1. 父组件传值给子组件（值拷贝）\n2. 子组件可以修改该值\n3. ❌ 修改只在子组件内生效\n4. ❌ 父组件不受影响\n5. 父组件重新渲染会覆盖子组件的值',
+          '#007DFF'
+        )
 
-        Button('增加')
-          .onClick(() => {
-            this.currentCount++
-          })
+        this.BehaviorItem(
+          '@Link 行为',
+          '1. 父组件传引用给子组件\n2. 子组件可以修改该值\n3. ✅ 修改会同步到父组件\n4. ✅ 父子组件始终保持一致\n5. 双向数据绑定',
+          '#52C41A'
+        )
       }
-      .justifyContent(FlexAlign.Center)
       .width('100%')
     }
     .width('100%')
@@ -230,21 +262,71 @@ struct PropDemo {
   }
 
   @Builder
-  ProductListSection() {
+  BehaviorItem(title: string, desc: string, color: string) {
     Column({ space: 8 }) {
-      ForEach(this.products, (product: ProductInfo) => {
-        ProductCard({
-          name: product.name,
-          price: product.price,
-          inStock: product.inStock
-        })
-      }, (product: ProductInfo) => product.name)
+      Text(title)
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(color)
+
+      Text(desc)
+        .fontSize(12)
+        .fontColor('#666')
+        .lineHeight(18)
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#F8F8F8')
+    .borderRadius(8)
+  }
+
+  @Builder
+  RecommendationSection() {
+    Column({ space: 12 }) {
+      Text('使用建议')
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
+
+      Column({ space: 8 }) {
+        this.RecommendItem(
+          '✅ 使用 @Prop',
+          '• 子组件只用于展示数据\n• 子组件不需要修改数据\n• 父组件需要完全控制数据'
+        )
+
+        this.RecommendItem(
+          '✅ 使用 @Link',
+          '• 子组件需要修改数据\n• 修改需要同步到父组件\n• 表单输入、开关等交互组件'
+        )
+
+        this.RecommendItem(
+          '⚠️ 避免的做法',
+          '• 在 @Prop 子组件中修改数据（容易误导）\n• 混用 @Prop 和 @Link 传递同一数据'
+        )
+      }
     }
     .width('100%')
     .padding(16)
     .backgroundColor(Color.White)
     .borderRadius(12)
     .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
+  }
+
+  @Builder
+  RecommendItem(title: string, items: string) {
+    Column({ space: 6 }) {
+      Text(title)
+        .fontSize(13)
+        .fontWeight(FontWeight.Medium)
+
+      Text(items)
+        .fontSize(12)
+        .fontColor('#666')
+        .lineHeight(18)
+    }
+    .width('100%')
+    .padding(10)
+    .backgroundColor('#F8F8F8')
+    .borderRadius(6)
   }
 
   @Builder
@@ -277,43 +359,6 @@ struct PropDemo {
       .padding(12)
       .backgroundColor('#E6F7FF')
       .borderRadius(8)
-  }
-
-  @Builder
-  CompareCard() {
-    Column({ space: 8 }) {
-      Text('装饰器对比')
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-
-      Row() {
-        Text('@Prop')
-          .fontSize(12)
-          .fontColor('#007DFF')
-          .padding(4)
-          .backgroundColor('#E6F7FF')
-          .borderRadius(4)
-
-        Text('单向')
-          .fontSize(12)
-          .fontColor('#666')
-
-        Text('@Link')
-          .fontSize(12)
-          .fontColor('#52C41A')
-          .padding(4)
-          .backgroundColor('#F6FFED')
-          .borderRadius(4)
-
-        Text('双向')
-          .fontSize(12)
-          .fontColor('#666')
-      }
-    }
-    .width('100%')
-    .padding(12)
-    .backgroundColor(Color.White)
-    .borderRadius(8)
   }
 
   @Builder
