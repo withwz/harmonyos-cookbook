@@ -17,6 +17,7 @@
     "pages/ListLayoutDemo",
     "pages/RouterDemo",
     "pages/RouterTargetPage",
-    "pages/ArkTSSyntaxDemo"
+    "pages/ArkTSSyntaxDemo",
+    "pages/NetworkKitDemo"
   ]
 }

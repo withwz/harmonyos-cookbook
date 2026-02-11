@@ -70,8 +70,8 @@ struct Index {
             .borderRadius(12)
           }
 
-          // 路由学习入口
           Row({ space: 12 }) {
+            // 路由学习入口
             Column({ space: 12 }) {
               Text('🔗')
                 .fontSize(32)
@@ -121,7 +121,31 @@ struct Index {
             .backgroundColor(Color.White)
             .borderRadius(12)
           }
-          .width('100%')
+
+          // Kit 学习入口
+          Column({ space: 12 }) {
+            Text('📦')
+              .fontSize(32)
+            Text('Kit学习')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+            Text('Network/Image等')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Button('开始学习')
+              .fontSize(12)
+              .width('100%')
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/NetworkKitDemo'
+                })
+              })
+          }
+          .layoutWeight(1)
+          .padding(16)
+          .backgroundColor(Color.White)
+          .borderRadius(12)
         }
         .width('100%')
       }
