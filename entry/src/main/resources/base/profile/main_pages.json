@@ -18,6 +18,8 @@
     "pages/RouterDemo",
     "pages/RouterTargetPage",
     "pages/ArkTSSyntaxDemo",
-    "pages/NetworkKitDemo"
+    "pages/NetworkKitDemo",
+    "pages/ImageKitDemo",
+    "pages/KitLearningPage"
   ]
 }

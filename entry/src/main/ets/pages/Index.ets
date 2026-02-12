@@ -96,7 +96,7 @@ struct Index {
             .backgroundColor(Color.White)
             .borderRadius(12)
 
-            // ArkTS 语法学习入口
+            // 语法学习入口
             Column({ space: 12 }) {
               Text('📝')
                 .fontSize(32)
@@ -128,18 +128,18 @@ struct Index {
               .fontSize(32)
             Text('Kit学习')
               .fontSize(16)
-              .fontWeight(FontWeight.Medium)
-            Text('Network/Image等')
-              .fontSize(12)
-              .fontColor('#999')
+                .fontWeight(FontWeight.Medium)
+              Text('Network/Image等')
+                .fontSize(12)
+                .fontColor('#999')
 
             Button('开始学习')
               .fontSize(12)
               .width('100%')
               .onClick(() => {
                 router.pushUrl({
-                  url: 'pages/NetworkKitDemo'
-                })
+                  url: 'pages/KitLearningPage'
+                  })
               })
           }
           .layoutWeight(1)
