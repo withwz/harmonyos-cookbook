@@ -1,89 +1,96 @@
 import router from '@ohos.router'
-import { image } from '@kit.ImageKit'
 
 /**
  * Image Kit 演示
  *
- * 展示图片加载、缓存、占位图等功能
+ * 基于 HarmonyOS 官方文档整理
+ * https://developer.huawei.com/consumer/cn/doc/harmonyos-references/arkts-apis-image-image
  */
 
-interface ImageItem {
-  url: string
+interface ObjectFitItem {
+  name: string
+  value: ImageFit
+  description: string
+}
+
+interface ImageSourceItem {
   name: string
   description: string
+  code: string
 }
 
 @Entry
 @Component
 struct ImageKitDemo {
-  @State currentImageIndex: number = 0
-  @State imageLoading: boolean = false
-  @State showError: boolean = false
-  @State selectedScale: number = 1
+  @State selectedIndex: number = 0
+  @State loadingIndex: number = -1
 
-  // 本地图片示例
-  private localImages: Array<string> = [
-    'app.media.app_icon',  // 使用资源
-    'app.media.app_icon',  // 可以重复使用
+  // objectFit 缩放模式列表
+  private objectFitList: Array<ObjectFitItem> = [
+    { name: 'Cover', value: ImageFit.Cover, description: '保持宽高比，放大或缩小，直到填满容器' },
+    { name: 'Contain', value: ImageFit.Contain, description: '保持宽高比，缩小或放大，直到完全显示' },
+    { name: 'Fill', value: ImageFit.Fill, description: '不保持宽高比，填满容器' },
+    { name: 'None', value: ImageFit.None, description: '保持原有尺寸，不缩放' },
+    { name: 'ScaleDown', value: ImageFit.ScaleDown, description: '保持宽高比，仅缩小不放大' }
   ]
 
-  // 网络图片列表
-  private networkImages: Array<ImageItem> = [
+  // 图片来源示例
+  private imageSources: Array<ImageSourceItem> = [
     {
-      url: 'https://img.yzcdn.cn/iconv2/157588/pic.go.png',
-      name: '头像占位图',
-      description: '用户默认头像'
+      name: '本地资源',
+      description: '使用 $r() 加载 resources/base/media 目录下的图片',
+      code: "Image($r('app.media.icon'))"
     },
     {
-      url: 'https://img.yzcdn.cn/iconv2/157588/pic.go.png',
-      name: '示例图片1',
-      description: '风景图片'
+      name: '网络图片',
+      description: '使用 http/https URL 加载网络图片（需配置网络权限）',
+      code: "Image('https://example.com/image.jpg')"
+    },
+    {
+      name: 'Base64 字符串',
+      description: '使用 Base64 编码的图片数据',
+      code: "Image('data:image/png;base64,iVBOR...')"
+    },
+    {
+      name: 'PixelMap',
+      description: '使用图像解码后的 PixelMap 对象',
+      code: 'Image(this.pixelMap)'
     }
   ]
 
-  // 常用网络图片URL（实际开发时使用真实地址）
-  private sampleUrls: Array<string> = [
-    'https://example.com/image1.jpg',
-    'https://example.com/image2.jpg'
-  ]
+  // 获取颜色
+  private getColor(index: number): string {
+    const colors: Array<string> = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB']
+    return colors[index % colors.length]
+  }
 
   build() {
     Scroll() {
-      Column({ space: 16 }) {
-        // 返回按钮
-        this.BackButton()
+      Column({ space: 0 }) {
+        // 顶部导航
+        this.Header()
 
-        // 标题
-        this.SectionTitle('Image Kit - 图片服务')
+        // 主要内容
+        Column({ space: 16 }) {
+          // 1. 图片来源
+          this.ImageSourcesSection()
 
-        // 说明卡片
-        this.InfoCard('Image Kit 提供图片加载、缓存、占位图等功能')
+          // 2. 基础属性
+          this.BasicPropsSection()
 
-        // 示例1：基础图片加载
-        this.BasicImageSection()
+          // 3. objectFit 缩放模式
+          this.ObjectFitSection()
 
-        // 示例2：网络图片
-        this.NetworkImageSection()
+          // 4. 事件回调
+          this.EventsSection()
 
-        // 示例3：占位图
-        this.PlaceholderSection()
-
-        // 示例4：图片缓存
-        this.CacheSection()
-
-        // 示例5：图片缩放
-        this.ScaleSection()
-
-        // 示例6：SVG图片
-        this.SVGSection()
-
-        // API说明
-        this.APISection()
-
-        this.TipCard('💡 提示：实际开发中使用真实图片URL')
+          // 5. 高级属性
+          this.AdvancedPropsSection()
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
     }
     .width('100%')
     .height('100%')
@@ -91,424 +98,268 @@ struct ImageKitDemo {
   }
 
   @Builder
-  BackButton() {
-    Row() {
-      Button('← 返回')
-        .fontSize(14)
+  Header() {
+    Column({ space: 12 }) {
+      Row() {
+        Button() {
+          Text('←')
+            .fontSize(18)
+            .fontColor(Color.White)
+        }
+        .width(32)
+        .height(32)
+        .backgroundColor('#007DFF')
+        .borderRadius(16)
         .onClick(() => {
           router.back()
         })
-    }
-    .width('100%')
-    .margin({ bottom: 10 })
-  }
-
-  @Builder
-  SectionTitle(title: string) {
-    Text(title)
-      .fontSize(24)
-      .fontWeight(FontWeight.Bold)
-      .width('100%')
-  }
-
-  @Builder
-  InfoCard(info: string) {
-    Text(info)
-      .fontSize(14)
-      .fontColor('#13C2C2')
-      .width('100%')
-      .padding(12)
-      .backgroundColor('#E6FFFE')
-      .borderRadius(8)
-  }
-
-  @Builder
-  BasicImageSection() {
-    Column({ space: 12 }) {
-      Text('示例1：基础图片加载')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-
-      Column({ space: 12 }) {
-        // 本地图片
-        Column({ space: 8 }) {
-          Text('本地资源图片')
-            .fontSize(14)
-            .fontColor('#666')
-
-          Row({ space: 12 }) {
-            Image($r('app.media.app_icon'))
-              .width(80)
-              .height(80)
-              .borderRadius(8)
-              .objectFit(ImageFit.Cover)
-
-            Column({ space: 4 }) {
-              Text('app.media.app_icon')
-                .fontSize(12)
-                .fontFamily('monospace')
-                .fontColor('#999')
-
-              Text('从资源目录加载')
-                .fontSize(11)
-                .fontColor('#666')
-            }
-          }
-        }
       }
+      .width('100%')
+
+      Text('Image 组件')
+        .fontSize(28)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
+
+      Text('图片渲染与管理')
+        .fontSize(14)
+        .fontColor('#999999')
     }
     .width('100%')
-    .padding(16)
+    .padding(20)
     .backgroundColor(Color.White)
-    .borderRadius(12)
+    .borderRadius({ bottomLeft: 20, bottomRight: 20 })
   }
 
   @Builder
-  NetworkImageSection() {
+  ImageSourcesSection() {
     Column({ space: 12 }) {
-      Text('示例2：网络图片加载')
-        .fontSize(16)
+      Text('图片来源')
+        .fontSize(18)
         .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
 
-      Column({ space: 12 }) {
-        // 单张图片
+      ForEach(this.imageSources, (item: ImageSourceItem, index: number) => {
         Column({ space: 8 }) {
-          Text('单张网络图片')
-            .fontSize(14)
-            .fontColor('#666')
-
-          if (this.imageLoading) {
-            Row({ space: 8 }) {
-              LoadingProgress()
-                .width(20)
-                .height(20)
-                .color('#007DFF')
-
-              Text('加载中...')
-                .fontSize(14)
-                .fontColor('#666')
+          Row({ space: 12 }) {
+            // 色块图标
+            Column() {
+              Text((index + 1).toString())
+                .fontSize(16)
+                .fontColor(Color.White)
+                .fontWeight(FontWeight.Bold)
             }
-            .justifyContent(FlexAlign.Center)
-          }
-
-          Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-            .width(120)
-            .height(120)
+            .width(40)
+            .height(40)
+            .backgroundColor(this.getColor(index))
             .borderRadius(8)
-            .objectFit(ImageFit.Cover)
-            .onStart(() => {
-              this.imageLoading = true
-              this.showError = false
-            })
-            .onComplete(() => {
-              this.imageLoading = false
-            })
-            .onError(() => {
-              this.imageLoading = false
-              this.showError = true
-            })
-            .onError((errorArgs: Record<string, string>) => {
-              console.error('图片加载失败:', JSON.stringify(errorArgs))
-            })
+            .justifyContent(FlexAlign.Center)
 
-          if (this.showError) {
-            Text('图片加载失败')
-              .fontSize(12)
-              .fontColor('#FF6B6B')
-              .margin({ top: 8 })
+            Column({ space: 4 }) {
+              Text(item.name)
+                .fontSize(15)
+                .fontWeight(FontWeight.Medium)
+                .fontColor('#1F1F1F')
+
+              Text(item.description)
+                .fontSize(12)
+                .fontColor('#999999')
+            }
+            .alignItems(HorizontalAlign.Start)
+            .layoutWeight(1)
           }
+          .width('100%')
+          .padding(12)
+          .backgroundColor('#F8F8F8')
+          .borderRadius(12)
         }
-      }
+      }, (item: ImageSourceItem, index: number) => `${index}`)
     }
     .width('100%')
     .padding(16)
     .backgroundColor(Color.White)
-    .borderRadius(12)
+    .borderRadius(16)
   }
 
   @Builder
-  PlaceholderSection() {
+  BasicPropsSection() {
     Column({ space: 12 }) {
-      Text('示例3：占位图设置')
-        .fontSize(16)
+      Text('基础属性')
+        .fontSize(18)
         .fontWeight(FontWeight.Bold)
-
-      Column({ space: 12 }) {
-        Column({ space: 8 }) {
-          Row({ space: 12 }) {
-            Column({ space: 4 }) {
-              Text('默认占位图')
-                .fontSize(14)
-                .fontColor('#666')
-
-              Text('加载前显示的图片')
-                .fontSize(11)
-                .fontColor('#999')
-            }
-            .layoutWeight(1)
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(100)
-              .borderRadius(8)
-              .objectFit(ImageFit.Cover)
-              .alt('默认占位图')
-              .onError(() => {
-                // 占位图加载失败时的处理
-              })
-          }
-
-          Row({ space: 12 }) {
-            Column({ space: 4 }) {
-              Text('加载失败占位图')
-                .fontSize(14)
-                .fontColor('#666')
-
-              Text('网络图片加载失败时显示')
-                .fontSize(11)
-                .fontColor('#999')
-            }
-            .layoutWeight(1)
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(100)
-              .borderRadius(8)
-              .objectFit(ImageFit.Cover)
-              .alt('错误占位图')
-              .onError(() => {
-                // 这里用错误图片替换
-              })
-          }
-        }
-      }
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-  }
-
-  @Builder
-  CacheSection() {
-    Column({ space: 12 }) {
-      Text('示例4：图片缓存说明')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
 
       Column({ space: 8 }) {
-        this.CacheItem(
-          '内存缓存',
-          '已解码的图片缓存在内存中，下次访问更快',
-          '#52C41A'
-        )
-
-        this.CacheItem(
-          '磁盘缓存',
-          '图片文件缓存在本地，避免重复下载',
-          '#007DFF'
-        )
-
-        this.CacheItem(
-          '自动清理',
-          '系统会自动管理缓存大小',
-          '#FA8C16'
-        )
+        this.PropRow('width / height', 'Length', '设置图片的宽度和高度')
+        this.PropRow('alt', 'string', '加载失败时显示的替代文本')
+        this.PropRow('objectFit', 'ImageFit', '图片的缩放模式')
+        this.PropRow('syncLoad', 'boolean', '是否同步加载图片')
+        this.PropRow('borderRadius', 'Length', '图片圆角半径')
+        this.PropRow('border', 'BorderOptions', '图片边框样式')
       }
+      .width('100%')
     }
     .width('100%')
     .padding(16)
     .backgroundColor(Color.White)
-    .borderRadius(12)
+    .borderRadius(16)
   }
 
   @Builder
-  CacheItem(title: string, desc: string, color: string) {
+  PropRow(name: string, type: string, desc: string) {
     Row({ space: 12 }) {
-      Column({ space: 4 }) {
-        Text(title)
-          .fontSize(14)
-          .fontWeight(FontWeight.Medium)
-          .fontColor(color)
-
-        Text(desc)
-          .fontSize(12)
-          .fontColor('#666')
-      }
-    }
-    .layoutWeight(1)
-  }
-
-  @Builder
-  ScaleSection() {
-    Column({ space: 12 }) {
-      Text('示例5：图片缩放模式')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-
-      Column({ space: 12 }) {
-        Row({ space: 8 }) {
-          Column({ space: 6 }) {
-            Text('Cover')
-              .fontSize(13)
-              .fontColor('#666')
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(80)
-              .objectFit(ImageFit.Cover)
-              .border({ width: 2, color: '#E6E6E6' })
-          }
-
-          Column({ space: 6 }) {
-            Text('Contain')
-              .fontSize(13)
-              .fontColor('#666')
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(80)
-              .objectFit(ImageFit.Contain)
-              .border({ width: 2, color: '#E6E6E6' })
-          }
-
-          Column({ space: 6 }) {
-            Text('Fill')
-              .fontSize(13)
-              .fontColor('#666')
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(80)
-              .objectFit(ImageFit.Fill)
-              .border({ width: 2, color: '#E6E6E6' })
-          }
-        }
-
-        Row({ space: 8 }) {
-          Column({ space: 6 }) {
-            Text('None')
-              .fontSize(13)
-              .fontColor('#666')
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(80)
-              .objectFit(ImageFit.None)
-              .border({ width: 2, color: '#E6E6E6' })
-          }
-
-          Column({ space: 6 }) {
-            Text('ScaleDown')
-              .fontSize(13)
-              .fontColor('#666')
-
-            Image('https://img.yzcdn.cn/iconv2/157588/pic.go.png')
-              .width(100)
-              .height(80)
-              .objectFit(ImageFit.ScaleDown)
-              .border({ width: 2, color: '#E6E6E6' })
-          }
-        }
-      }
-
-      Text('objectFit 参数说明')
-        .fontSize(12)
-        .fontColor('#999')
-        .width('100%')
-        .textAlign(TextAlign.Center)
-        .margin({ top: 8 })
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-  }
-
-  @Builder
-  SVGSection() {
-    Column({ space: 12 }) {
-      Text('示例6：SVG 图片支持')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-
-      Column({ space: 8 }) {
-        Text('SVG 矢量图标')
-          .fontSize(14)
-          .fontColor('#666')
-
-        Row({ space: 12 }) {
-          Column({ space: 4 }) {
-            Text('SVG 图标')
-              .fontSize(12)
-              .fontColor('#999')
-
-            Text('推荐使用 SVG，任意缩放不失真')
-              .fontSize(11)
-              .fontColor('#666')
-          }
-
-          Image($r('sys.symbol.ohos_ic_public_phone'))
-            .width(60)
-            .height(60)
-            .fillColor('#007DFF')
-        }
-      }
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-  }
-
-  @Builder
-  APISection() {
-    Column({ space: 12 }) {
-      Text('常用 API 说明')
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-
-      Column({ space: 8 }) {
-        this.APIItem('onStart()', '图片开始加载')
-        this.APIItem('onComplete()', '图片加载完成')
-        this.APIItem('onError()', '图片加载失败')
-        this.APIItem('onSuccess()', '图片加载成功（部分场景）')
-        this.APIItem('objectFit', '图片缩放模式：Cover/Contain/Fill/None/ScaleDown')
-        this.APIItem('alt', '占位文本或占位图片资源')
-      }
-    }
-    .width('100%')
-    .padding(16)
-    .backgroundColor(Color.White)
-    .borderRadius(12)
-  }
-
-  @Builder
-  APIItem(name: string, desc: string) {
-    Row({ space: 8 }) {
       Text(name)
         .fontSize(13)
         .fontFamily('monospace')
-        .fontColor('#722ED1')
-        .width(140)
+        .fontColor('#007DFF')
+        .fontWeight(FontWeight.Medium)
+        .width(100)
+
+      Text(type)
+        .fontSize(11)
+        .fontColor('#999999')
+        .fontFamily('monospace')
+        .width(70)
 
       Text(desc)
         .fontSize(12)
-        .fontColor('#666')
+        .fontColor('#666666')
         .layoutWeight(1)
     }
     .width('100%')
+    .padding({ top: 8, bottom: 8 })
+    .borderRadius(8)
   }
 
   @Builder
-  TipCard(tip: string) {
-    Text(tip)
-      .fontSize(12)
-      .fontColor('#FA8C16')
+  ObjectFitSection() {
+    Column({ space: 12 }) {
+      Text('objectFit 缩放模式')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
+
+      ForEach(this.objectFitList, (item: ObjectFitItem, index: number) => {
+        Row({ space: 12 }) {
+          // 演示区域
+          Column() {
+            Text(item.name.substring(0, 2))
+              .fontSize(12)
+              .fontColor(Color.White)
+              .fontWeight(FontWeight.Bold)
+          }
+          .width(70)
+          .height(70)
+          .backgroundColor(this.getColor(index + 5))
+          .borderRadius(12)
+          .justifyContent(FlexAlign.Center)
+
+          // 说明
+          Column({ space: 4 }) {
+            Text(item.name)
+              .fontSize(14)
+              .fontWeight(FontWeight.Medium)
+              .fontColor('#1F1F1F')
+
+            Text(item.description)
+              .fontSize(11)
+              .fontColor('#999999')
+
+            Text(`ImageFit.${item.name}`)
+              .fontSize(10)
+              .fontColor('#007DFF')
+              .fontFamily('monospace')
+              .margin({ top: 4 })
+          }
+          .alignItems(HorizontalAlign.Start)
+          .layoutWeight(1)
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(12)
+      }, (item: ObjectFitItem, index: number) => `${index}`)
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor(Color.White)
+    .borderRadius(16)
+  }
+
+  @Builder
+  EventsSection() {
+    Column({ space: 12 }) {
+      Text('事件回调')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
+
+      Column({ space: 10 }) {
+        this.EventRow('onComplete', '图片数据加载成功', '#52C41A')
+        this.EventRow('onError', '图片加载异常', '#FF3B30')
+        this.EventRow('onFinish', '图片加载完成，不论成功或失败', '#007DFF')
+      }
       .width('100%')
-      .padding(12)
-      .backgroundColor('#FFF7E6')
-      .borderRadius(8)
-      .margin({ top: 10 })
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor(Color.White)
+    .borderRadius(16)
+  }
+
+  @Builder
+  EventRow(name: string, desc: string, color: string) {
+    Row({ space: 12 }) {
+      Column() {
+        Text('●')
+          .fontSize(8)
+          .fontColor(color)
+      }
+      .width(20)
+
+      Column({ space: 2 }) {
+        Text(name)
+          .fontSize(13)
+          .fontFamily('monospace')
+          .fontColor(color)
+          .fontWeight(FontWeight.Medium)
+
+        Text(desc)
+          .fontSize(12)
+          .fontColor('#666666')
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+    }
+    .width('100%')
+    .padding({ top: 6, bottom: 6 })
+  }
+
+  @Builder
+  AdvancedPropsSection() {
+    Column({ space: 12 }) {
+      Text('高级属性')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#1F1F1F')
+
+      Column({ space: 8 }) {
+        this.PropRow('matchTextDirection', 'boolean', '图片是否跟随文字方向')
+        this.PropRow('fitOriginalSize', 'boolean', '组件尺寸与图片原始尺寸相同')
+        this.PropRow('autoResize', 'boolean', '是否自动适配组件大小')
+        this.PropRow('objectRepeat', 'ImageRepeat', '图片重复模式')
+        this.PropRow('colorFilter', 'ColorFilter', '图片颜色滤镜效果')
+        this.PropRow('draggable', 'boolean', '图片是否可拖拽')
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor(Color.White)
+    .borderRadius(16)
+  }
+
+  aboutToAppear() {
+    console.log('ImageKitDemo aboutToAppear')
   }
 }

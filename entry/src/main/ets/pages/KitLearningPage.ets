@@ -100,6 +100,8 @@ struct KitLearningPage {
         }
         .width('100%')
         .padding({ left: 16, right: 16, bottom: 20 })
+        .backgroundColor('#FFFBE6')
+        .borderRadius(12)
 
         // 进度统计
         Row({ space: 16 }) {
@@ -127,8 +129,8 @@ struct KitLearningPage {
         }
         .width('100%')
         .justifyContent(FlexAlign.Center)
-        .padding(16)
-        .backgroundColor('#FFFBE6')
+        .padding(20)
+        .backgroundColor(Color.White)
         .borderRadius(12)
 
         // Kit 列表
@@ -161,8 +163,11 @@ struct KitLearningPage {
         }
         .width('100%')
         .padding({ left: 16, right: 16, bottom: 20 })
+        .backgroundColor('#FFF7E6')
+        .borderRadius(12)
       }
       .width('100%')
+      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
     }
     .width('100%')
     .height('100%')
@@ -171,32 +176,35 @@ struct KitLearningPage {
 
   @Builder
   KitCard(kit: KitItem) {
-    Row({ space: 16 }) {
-      // 图标和名称
-      Column({ space: 4 }) {
-        Text(kit.icon)
-          .fontSize(40)
+    Row() {
+      // 图标
+      Text(kit.icon)
+        .fontSize(48)
 
+      // 中间信息
+      Column({ space: 6 }) {
         Text(kit.name)
           .fontSize(18)
-          .fontWeight(FontWeight.Medium)
-      }
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#333')
 
-      Column({ space: 4 }) {
         Text(kit.description)
-          .fontSize(14)
-          .fontColor('#666')
-
-        this.StatusBadge(kit.status)
+          .fontSize(13)
+          .fontColor('#999')
       }
-      .layoutWeight(1)
       .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 12 })
+
+      // 状态徽章
+      this.StatusBadge(kit.status)
     }
     .width('100%')
     .padding(16)
-    .backgroundColor(Color.White)
+    .backgroundColor(kit.status === 'todo' ? '#F5F5F5' : Color.White)
     .borderRadius(12)
-    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
+    .border({ width: kit.status === 'todo' ? 0 : 1, color: '#E6E6E6' })
+    .shadow({ radius: 8, color: '#10000000', offsetX: 0, offsetY: 2 })
     .onClick(() => {
       if (kit.status !== 'todo') {
         router.pushUrl({
@@ -208,33 +216,27 @@ struct KitLearningPage {
 
   @Builder
   StatusBadge(status: string) {
-    Row({ space: 4 }) {
-      if (status === 'done') {
-        Text('✓ 已完成')
-          .fontSize(11)
-          .fontColor('#52C41A')
-          .padding({ left: 8, right: 8, top: 2, bottom: 2 })
-          .backgroundColor('#F6FFED')
-          .borderRadius(4)
-      }
-
-      if (status === 'learning') {
-        Text('⏳ 学习中')
-          .fontSize(11)
-          .fontColor('#FAAD14')
-          .padding({ left: 8, right: 8, top: 2, bottom: 2 })
-          .backgroundColor('#FFF7E6')
-          .borderRadius(4)
-      }
-
-      if (status === 'todo') {
-        Text('🔒 即将开放')
-          .fontSize(11)
-          .fontColor('#999')
-          .padding({ left: 8, right: 8, top: 2, bottom: 2 })
-          .backgroundColor('#F5F5F5')
-          .borderRadius(4)
-      }
+    if (status === 'done') {
+      Text('✓ 已完成')
+        .fontSize(11)
+        .fontColor('#52C41A')
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .backgroundColor('#F6FFED')
+        .borderRadius(4)
+    } else if (status === 'learning') {
+      Text('⏳ 学习中')
+        .fontSize(11)
+        .fontColor('#FAAD14')
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .backgroundColor('#FFF7E6')
+        .borderRadius(4)
+    } else {
+      Text('🔒 即将开放')
+        .fontSize(11)
+        .fontColor('#999')
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .backgroundColor('#F5F5F5')
+        .borderRadius(4)
     }
   }
 
@@ -244,9 +246,5 @@ struct KitLearningPage {
 
   private getLearningCount(): number {
     return this.kits.filter((kit: KitItem) => kit.status === 'learning').length
-  }
-
-  aboutToAppear() {
-    console.log('KitLearningPage aboutToAppear')
   }
 }
