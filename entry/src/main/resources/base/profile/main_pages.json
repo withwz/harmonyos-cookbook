@@ -37,6 +37,7 @@
     "pages/LoadingProgressDemo",
     "pages/ScrollDemo",
     "pages/NavigatorDemo",
-    "pages/AppStorageDemo"
+    "pages/AppStorageDemo",
+    "pages/PersistentStorageDemo"
   ]
 }

@@ -183,6 +183,13 @@ struct Index {
             description: 'AppStorage',
             route: 'pages/AppStorageDemo',
             color: '#6F42C1'
+          },
+          {
+            icon: '💾',
+            title: '持久化存储',
+            description: 'PersistentStorage',
+            route: 'pages/PersistentStorageDemo',
+            color: '#13C2C2'
           }
         ]
       },
