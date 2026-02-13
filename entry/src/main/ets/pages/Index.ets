@@ -399,14 +399,14 @@ struct Index {
           }
 
           Row({ space: 12 }) {
-            // 菜单组件入口
+            // 画布组件入口
             Column({ space: 12 }) {
-              Text('📋')
+              Text('🎨')
                 .fontSize(32)
-              Text('菜单组件')
+              Text('画布绘制')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
-              Text('Menu/MenuItem等')
+              Text('Canvas 2D绘制')
                 .fontSize(12)
                 .fontColor('#999')
 
@@ -415,7 +415,7 @@ struct Index {
                 .width('100%')
                 .onClick(() => {
                   router.pushUrl({
-                    url: 'pages/MenuDemo'
+                    url: 'pages/CanvasDemo'
                   })
                 })
             }
