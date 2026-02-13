@@ -141,6 +141,13 @@ struct Index {
             description: 'LoadingProgress/Progress',
             route: 'pages/LoadingProgressDemo',
             color: '#9C27B0'
+          },
+          {
+            icon: '📜',
+            title: '滚动容器',
+            description: 'Scroll',
+            route: 'pages/ScrollDemo',
+            color: '#722ED1'
           }
         ]
       },
