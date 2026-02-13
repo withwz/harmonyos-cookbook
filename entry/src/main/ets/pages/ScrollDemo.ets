@@ -18,23 +18,34 @@ struct ScrollDemo {
   }
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // Scroll 基础演示
-        this.BasicScroll()
-
-        // 滚动位置控制
-        this.ScrollControl()
-
-        // 滚动事件
-        this.ScrollEvent()
-
-        this.TipCard('滚动组件要点：掌握滚动事件监听和位置控制')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Scroll 基础演示
+          this.BasicScroll()
+
+          // 滚动位置控制
+          this.ScrollControl()
+
+          // 滚动事件
+          this.ScrollEvent()
+
+          this.TipCard('滚动组件要点：掌握滚动事件监听和位置控制')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -65,6 +76,8 @@ struct ScrollDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

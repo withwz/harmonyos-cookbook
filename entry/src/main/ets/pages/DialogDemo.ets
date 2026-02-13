@@ -13,23 +13,34 @@ struct DialogDemo {
   @State popupVisible: boolean = false
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // AlertDialog 对话框
-        this.AlertDialogSection()
-
-        // ActionSheet 操作列表
-        this.ActionSheetSection()
-
-        // Popup 气泡弹窗
-        this.PopupSection()
-
-        this.TipCard('弹窗组件要点：掌握各种弹窗的显示和交互方式')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // AlertDialog 对话框
+          this.AlertDialogSection()
+
+          // ActionSheet 操作列表
+          this.ActionSheetSection()
+
+          // Popup 气泡弹窗
+          this.PopupSection()
+
+          this.TipCard('弹窗组件要点：掌握各种弹窗的显示和交互方式')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -60,6 +71,8 @@ struct DialogDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

@@ -12,17 +12,28 @@ struct CanvasDemo {
   private canvasHeight: number = 200
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // Canvas 基础绘制
-        this.CanvasSection()
-
-        this.TipCard('画布组件要点：掌握 Canvas 2D 绘图上下文的使用')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Canvas 基础绘制
+          this.CanvasSection()
+
+          this.TipCard('画布组件要点：掌握 Canvas 2D 绘图上下文的使用')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -53,6 +64,8 @@ struct CanvasDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

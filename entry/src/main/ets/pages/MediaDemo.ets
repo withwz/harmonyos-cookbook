@@ -11,20 +11,27 @@ struct MediaDemo {
   @State currentFit: ImageFit = ImageFit.Cover
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
-        this.Header()
+    Column() {
+      // Header 固定在顶部
+      this.Header()
 
-        // Image 图片显示
-        this.ImageSection()
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Image 图片显示
+          this.ImageSection()
 
-        // Image 缩放模式
-        this.ImageFitSection()
+          // Image 缩放模式
+          this.ImageFitSection()
 
-        this.TipCard('图片与视频组件要点：掌握不同来源的图片加载和视频播放控制')
+          this.TipCard('图片与视频组件要点：掌握不同来源的图片加载和视频播放控制')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
       }
+      .layoutWeight(1)
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -55,6 +62,8 @@ struct MediaDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

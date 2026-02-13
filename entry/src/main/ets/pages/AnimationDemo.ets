@@ -14,17 +14,24 @@ struct AnimationDemo {
   @State opacityValue: number = 1
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
-        this.Header()
+    Column() {
+      // Header 固定在顶部
+      this.Header()
 
-        // animateTo 属性动画
-        this.AnimateToSection()
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // animateTo 属性动画
+          this.AnimateToSection()
 
-        this.TipCard('动画组件要点：掌握 animateTo 实现平滑的属性过渡动画')
+          this.TipCard('动画组件要点：掌握 animateTo 实现平滑的属性过渡动画')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
       }
+      .layoutWeight(1)
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -55,6 +62,8 @@ struct AnimationDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

@@ -40,6 +40,7 @@
     "pages/AppStorageDemo",
     "pages/PersistentStorageDemo",
     "pages/PickerDemo",
-    "pages/PanelDemo"
+    "pages/PanelDemo",
+    "pages/BadgeDemo"
   ]
 }

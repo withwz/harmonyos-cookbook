@@ -24,20 +24,31 @@ struct RefreshDemo {
   }
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // Refresh 基础演示
-        this.BasicRefresh()
-
-        // 上拉加载更多
-        this.LoadMoreSection()
-
-        this.TipCard('下拉刷新要点：掌握onRefresh事件和加载状态管理')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Refresh 基础演示
+          this.BasicRefresh()
+
+          // 上拉加载更多
+          this.LoadMoreSection()
+
+          this.TipCard('下拉刷新要点：掌握onRefresh事件和加载状态管理')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -68,6 +79,8 @@ struct RefreshDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

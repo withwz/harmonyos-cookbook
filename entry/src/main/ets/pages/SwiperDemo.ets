@@ -13,26 +13,37 @@ struct SwiperDemo {
   private swiperController: SwiperController = new SwiperController()
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // Swiper 基础演示
-        this.BasicSwiper()
-
-        // Swiper 纵向轮播
-        this.VerticalSwiper()
-
-        // Swiper 自定义指示器
-        this.CustomIndicatorSwiper()
-
-        // Swiper 手动控制
-        this.ManualControlSwiper()
-
-        this.TipCard('轮播组件要点：掌握自动播放、指示器、循环播放等常用配置')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Swiper 基础演示
+          this.BasicSwiper()
+
+          // Swiper 纵向轮播
+          this.VerticalSwiper()
+
+          // Swiper 自定义指示器
+          this.CustomIndicatorSwiper()
+
+          // Swiper 手动控制
+          this.ManualControlSwiper()
+
+          this.TipCard('轮播组件要点：掌握自动播放、指示器、循环播放等常用配置')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -63,6 +74,8 @@ struct SwiperDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

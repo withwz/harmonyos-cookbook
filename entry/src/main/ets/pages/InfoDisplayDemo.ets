@@ -12,20 +12,27 @@ struct InfoDisplayDemo {
   @State showDialog: boolean = false
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
-        this.Header()
+    Column() {
+      // Header 固定在顶部
+      this.Header()
 
-        // Progress 进度条
-        this.ProgressSection()
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // Progress 进度条
+          this.ProgressSection()
 
-        // AlertDialog 对话框
-        this.AlertDialogSection()
+          // AlertDialog 对话框
+          this.AlertDialogSection()
 
-        this.TipCard('信息展示组件要点：掌握进度条、对话框、弹窗等组件的使用')
+          this.TipCard('信息展示组件要点：掌握进度条、对话框、弹窗等组件的使用')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
       }
+      .layoutWeight(1)
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -56,6 +63,8 @@ struct InfoDisplayDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder

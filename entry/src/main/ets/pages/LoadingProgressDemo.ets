@@ -12,23 +12,34 @@ struct LoadingProgressDemo {
   @State progress: number = 0
 
   build() {
-    Scroll() {
-      Column({ space: 20 }) {
+    Column() {
+      // Header 固定在顶部，包含左右边距
+      Row() {
         this.Header()
-
-        // LoadingProgress 基础演示
-        this.BasicLoading()
-
-        // 全屏加载
-        this.FullScreenLoading()
-
-        // Progress 进度条
-        this.ProgressSection()
-
-        this.TipCard('加载组件要点：掌握LoadingProgress和Progress的使用场景')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 20, bottom: 20 })
+      .padding({ left: 16, right: 16, top: 20 })
+
+      // 内容区域可滚动
+      Scroll() {
+        Column({ space: 20 }) {
+          // LoadingProgress 基础演示
+          this.BasicLoading()
+
+          // 全屏加载
+          this.FullScreenLoading()
+
+          // Progress 进度条
+          this.ProgressSection()
+
+          this.TipCard('加载组件要点：掌握LoadingProgress和Progress的使用场景')
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 20 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .scrollBar(BarState.Auto)
     }
     .width('100%')
     .height('100%')
@@ -59,6 +70,8 @@ struct LoadingProgressDemo {
         .margin({ right: 40 })
     }
     .width('100%')
+    .padding({ left: 0, right: 0, top: 0, bottom: 12 })
+    .backgroundColor('#F5F5F5')
   }
 
   @Builder
