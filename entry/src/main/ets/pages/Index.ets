@@ -253,6 +253,13 @@ struct Index {
             description: 'Search',
             route: 'pages/SearchDemo',
             color: '#007DFF'
+          },
+          {
+            icon: '🔘',
+            title: '开关组件',
+            description: 'Toggle',
+            route: 'pages/ToggleDemo',
+            color: '#52C41A'
           }
         ]
       },

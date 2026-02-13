@@ -46,6 +46,7 @@
     "pages/BlankDemo",
     "pages/ActionSheetDemo",
     "pages/TabsDemo",
-    "pages/SearchDemo"
+    "pages/SearchDemo",
+    "pages/ToggleDemo"
   ]
 }
