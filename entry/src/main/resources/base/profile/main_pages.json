@@ -33,6 +33,7 @@
     "pages/CanvasDemo",
     "pages/GridRowColDemo",
     "pages/SwiperDemo",
-    "pages/RefreshDemo"
+    "pages/RefreshDemo",
+    "pages/LoadingProgressDemo"
   ]
 }

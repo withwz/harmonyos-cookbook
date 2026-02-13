@@ -134,6 +134,13 @@ struct Index {
             description: 'Refresh',
             route: 'pages/RefreshDemo',
             color: '#13C2C2'
+          },
+          {
+            icon: '⏳',
+            title: '加载进度',
+            description: 'LoadingProgress/Progress',
+            route: 'pages/LoadingProgressDemo',
+            color: '#9C27B0'
           }
         ]
       },
