@@ -23,6 +23,7 @@
     "pages/KitLearningPage",
     "pages/ButtonAndSelectDemo",
     "pages/TextAndInputDemo",
-    "pages/MediaDemo"
+    "pages/MediaDemo",
+    "pages/NavigationDemo"
   ]
 }
