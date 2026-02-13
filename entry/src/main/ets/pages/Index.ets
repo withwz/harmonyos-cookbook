@@ -127,6 +127,13 @@ struct Index {
             description: 'Swiper',
             route: 'pages/SwiperDemo',
             color: '#FF6B6B'
+          },
+          {
+            icon: '🔄',
+            title: '下拉刷新',
+            description: 'Refresh',
+            route: 'pages/RefreshDemo',
+            color: '#13C2C2'
           }
         ]
       },

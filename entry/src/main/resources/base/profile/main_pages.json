@@ -32,6 +32,7 @@
     "pages/MenuDemo",
     "pages/CanvasDemo",
     "pages/GridRowColDemo",
-    "pages/SwiperDemo"
+    "pages/SwiperDemo",
+    "pages/RefreshDemo"
   ]
 }
