@@ -211,6 +211,27 @@ struct Index {
             description: 'Panel',
             route: 'pages/PanelDemo',
             color: '#722ED1'
+          },
+          {
+            icon: '📏',
+            title: '徽标',
+            description: 'Badge',
+            route: 'pages/BadgeDemo',
+            color: '#F5222D'
+          },
+          {
+            icon: '➖',
+            title: '分割线',
+            description: 'Divider',
+            route: 'pages/DividerDemo',
+            color: '#8E44AD'
+          },
+          {
+            icon: '⬜',
+            title: '空白填充',
+            description: 'Blank',
+            route: 'pages/BlankDemo',
+            color: '#13C2C2'
           }
         ]
       },

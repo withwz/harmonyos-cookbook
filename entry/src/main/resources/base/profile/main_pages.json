@@ -42,6 +42,7 @@
     "pages/PickerDemo",
     "pages/PanelDemo",
     "pages/BadgeDemo",
-    "pages/DividerDemo"
+    "pages/DividerDemo",
+    "pages/BlankDemo"
   ]
 }
