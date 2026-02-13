@@ -21,6 +21,7 @@
     "pages/NetworkKitDemo",
     "pages/ImageKitDemo",
     "pages/KitLearningPage",
-    "pages/ButtonAndSelectDemo"
+    "pages/ButtonAndSelectDemo",
+    "pages/TextAndInputDemo"
   ]
 }
