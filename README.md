@@ -1,4 +1,4 @@
-# HarmonyOS ArkTS 学习 Demo 项目
+# HarmonyOS ArkTS 学习 Demo - Vibe Coding 实践
 
 > 通过 **Vibe Coding** 方式开发的 HarmonyOS 组件学习项目，包含 45+ 个 Demo 页面。
 
