@@ -270,22 +270,32 @@ struct Index {
           }
 
           Row({ space: 12 }) {
-            // 占位
+            // 手势组件入口
             Column({ space: 12 }) {
-              Text('📦')
+              Text('👆')
                 .fontSize(32)
-              Text('敬请期待')
+              Text('手势组件')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
-              Text('更多组件')
+              Text('Tap/Pan/Pinch等')
                 .fontSize(12)
                 .fontColor('#999')
+
+              Button('开始学习')
+                .fontSize(12)
+                .width('100%')
+                .onClick(() => {
+                  router.pushUrl({
+                    url: 'pages/GestureDemo'
+                  })
+                })
             }
             .layoutWeight(1)
             .padding(16)
-            .backgroundColor('#F5F5F5')
+            .backgroundColor(Color.White)
             .borderRadius(12)
 
+            // 占位
             Column({ space: 12 }) {
               Text('📦')
                 .fontSize(32)

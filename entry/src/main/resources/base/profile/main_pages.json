@@ -25,6 +25,7 @@
     "pages/TextAndInputDemo",
     "pages/MediaDemo",
     "pages/NavigationDemo",
-    "pages/InfoDisplayDemo"
+    "pages/InfoDisplayDemo",
+    "pages/GestureDemo"
   ]
 }
