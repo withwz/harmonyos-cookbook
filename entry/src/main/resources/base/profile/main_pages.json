@@ -41,6 +41,7 @@
     "pages/PersistentStorageDemo",
     "pages/PickerDemo",
     "pages/PanelDemo",
-    "pages/BadgeDemo"
+    "pages/BadgeDemo",
+    "pages/DividerDemo"
   ]
 }
