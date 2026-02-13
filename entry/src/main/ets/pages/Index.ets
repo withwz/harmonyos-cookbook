@@ -6,7 +6,7 @@ struct Index {
   @State message: string = 'Hello World'
 
   build() {
-    RelativeContainer() {
+    Scroll() {
       Column({ space: 20 }) {
         Text(this.message)
           .id('HelloWorld')
@@ -193,11 +193,12 @@ struct Index {
         .width('100%')
       }
       .width('100%')
-      .padding(20)
-      .justifyContent(FlexAlign.Center)
+      .padding({ left: 20, right: 20, top: 20, bottom: 40 })
     }
-    .height('100%')
     .width('100%')
+    .height('100%')
     .backgroundColor('#F5F5F5')
+    .scrollBar(BarState.Auto)
+    .edgeEffect(EdgeEffect.Spring)
   }
 }
