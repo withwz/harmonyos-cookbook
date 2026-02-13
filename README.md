@@ -2,6 +2,51 @@
 
 一个专注于 HarmonyOS (ArkTS) 开发学习的演示项目，包含装饰器、布局组件、UI 组件和各种系统 Kit 的实际应用示例。
 
+## 🎯 项目定位
+
+### Vibe Coding 验证项目
+
+本项目是 **Vibe Coding** 开发模式的实践验证项目。通过 AI 辅助工具链，实现"小步快跑"的开发体验：
+
+- 🤖 **AI 驱动** - 使用 Claude Code + MCP 工具链辅助开发
+- 🔄 **快速验证** - 代码 → 构建 → 安装 → 验证闭环
+- 📝 **规范化** - Skill 驱动的标准化开发流程
+
+### 鸿蒙学习功能浏览项目
+
+作为 **HarmonyOS 组件功能展示库**，本项目提供：
+
+- 📱 **45+ Demo 页面** - 涵盖装饰器、布局、组件、Kit
+- 🔍 **可视化学习** - 每个组件都有实际演示效果
+- 📚 **系统化教程** - 配套学习计划和技术文档
+
+## 🔧 开发工具链
+
+本项目使用以下 MCP 工具和 Skill 实现 AI 辅助开发：
+
+### MCP 工具
+
+| 工具 | 功能 | 链接 |
+|------|------|------|
+| **harmonyos-control** | 构建、安装、启动、日志查看 | [harmony-dev-cli](https://github.com/withwz/harmony-dev-cli) |
+| **harmonyos-ui** | UI 自动化、截图、组件树分析 | [harmonyos-ui-inspector-mcp](https://github.com/withwz/harmonyos-ui-inspector-mcp) |
+
+### Skill
+
+| Skill | 功能 | 链接 |
+|-------|------|------|
+| **harmonyos-dev** | HarmonyOS 开发流程指南 | [harmonyos-dev-skill](https://github.com/withwz/harmonyos-dev-skill) |
+
+### 工作流程
+
+```
+用户需求 → Claude 分析 → 调用 MCP 工具
+                 ↓
+          构建 → 安装 → 启动 → 截图验证
+                 ↓
+          小步迭代，快速反馈
+```
+
 ## 项目概述
 
 本项目是 HarmonyOS 开发的学习项目，涵盖了从基础到高级的完整学习路径：
