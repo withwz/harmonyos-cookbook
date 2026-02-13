@@ -243,7 +243,49 @@ struct Index {
             .backgroundColor(Color.White)
             .borderRadius(12)
 
+            // 信息展示组件入口
+            Column({ space: 12 }) {
+              Text('📊')
+                .fontSize(32)
+              Text('信息展示')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+              Text('Progress/Dialog等')
+                .fontSize(12)
+                .fontColor('#999')
+
+              Button('开始学习')
+                .fontSize(12)
+                .width('100%')
+                .onClick(() => {
+                  router.pushUrl({
+                    url: 'pages/InfoDisplayDemo'
+                  })
+                })
+            }
+            .layoutWeight(1)
+            .padding(16)
+            .backgroundColor(Color.White)
+            .borderRadius(12)
+          }
+
+          Row({ space: 12 }) {
             // 占位
+            Column({ space: 12 }) {
+              Text('📦')
+                .fontSize(32)
+              Text('敬请期待')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+              Text('更多组件')
+                .fontSize(12)
+                .fontColor('#999')
+            }
+            .layoutWeight(1)
+            .padding(16)
+            .backgroundColor('#F5F5F5')
+            .borderRadius(12)
+
             Column({ space: 12 }) {
               Text('📦')
                 .fontSize(32)
