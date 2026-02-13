@@ -171,7 +171,7 @@ struct Index {
         .textOverflow({ overflow: TextOverflow.Ellipsis })
 
       // 按钮
-      Button('开始学习')
+      Button('开始浏览')
         .fontSize(12)
         .width('100%')
         .height(32)
