@@ -176,6 +176,13 @@ struct Index {
             description: '页面跳转/生命周期',
             route: 'pages/RouterDemo',
             color: '#FAAD14'
+          },
+          {
+            icon: '🗃️',
+            title: '全局状态',
+            description: 'AppStorage',
+            route: 'pages/AppStorageDemo',
+            color: '#6F42C1'
           }
         ]
       },
