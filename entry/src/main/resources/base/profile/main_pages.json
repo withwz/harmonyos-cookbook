@@ -28,6 +28,7 @@
     "pages/InfoDisplayDemo",
     "pages/GestureDemo",
     "pages/AnimationDemo",
-    "pages/DialogDemo"
+    "pages/DialogDemo",
+    "pages/MenuDemo"
   ]
 }
