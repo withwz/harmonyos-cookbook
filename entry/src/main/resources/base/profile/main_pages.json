@@ -30,6 +30,7 @@
     "pages/AnimationDemo",
     "pages/DialogDemo",
     "pages/MenuDemo",
-    "pages/CanvasDemo"
+    "pages/CanvasDemo",
+    "pages/GridRowColDemo"
   ]
 }
