@@ -120,6 +120,13 @@ struct Index {
             description: 'AlertDialog/Popup',
             route: 'pages/DialogDemo',
             color: '#FF4D4F'
+          },
+          {
+            icon: '🎠',
+            title: '轮播组件',
+            description: 'Swiper',
+            route: 'pages/SwiperDemo',
+            color: '#FF6B6B'
           }
         ]
       },
