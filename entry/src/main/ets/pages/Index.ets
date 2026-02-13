@@ -52,13 +52,6 @@ struct Index {
         color: '#FF6B6B'
       },
       {
-        icon: '📝',
-        title: '文本与输入',
-        description: 'Text/TextArea/Search',
-        route: 'pages/TextAndInputDemo',
-        color: '#722ED1'
-      },
-      {
         icon: '🖼️',
         title: '图片与视频',
         description: 'Image/Video',
@@ -101,25 +94,11 @@ struct Index {
         color: '#FF4D4F'
       },
       {
-        icon: '📋',
-        title: '菜单组件',
-        description: 'Menu/MenuItem',
-        route: 'pages/MenuDemo',
-        color: '#FF7D00'
-      },
-      {
         icon: '🎨',
         title: '画布绘制',
         description: 'Canvas 2D',
         route: 'pages/CanvasDemo',
         color: '#8E44AD'
-      },
-      {
-        icon: '📊',
-        title: '栅格布局',
-        description: 'GridRow/GridCol',
-        route: 'pages/GridRowColDemo',
-        color: '#9254DE'
       },
       {
         icon: '📦',
@@ -137,12 +116,10 @@ struct Index {
         // 顶部标题
         this.Header()
 
-        // Demo 列表
-        List({ space: 12 }) {
+        // Demo 两列网格
+        Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
           ForEach(this.demos, (item: DemoItem) => {
-            ListItem() {
-              this.DemoCard(item)
-            }
+            this.DemoCard(item)
           }, (item: DemoItem) => item.route)
         }
         .width('100%')
@@ -175,45 +152,43 @@ struct Index {
 
   @Builder
   DemoCard(item: DemoItem) {
-    Row() {
+    Column({ space: 12 }) {
       // 图标
       Text(item.icon)
-        .fontSize(40)
+        .fontSize(48)
 
-      // 信息区域
-      Column({ space: 8 }) {
-        Text(item.title)
-          .fontSize(18)
-          .fontWeight(FontWeight.Medium)
-          .fontColor('#1F1F1F')
+      // 标题
+      Text(item.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#1F1F1F')
 
-        Text(item.description)
-          .fontSize(14)
-          .fontColor('#666')
-          .maxLines(2)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+      // 描述
+      Text(item.description)
+        .fontSize(12)
+        .fontColor('#999')
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
 
-        Button('开始学习')
-          .fontSize(12)
-          .width('100%')
-          .height(36)
-          .backgroundColor(item.color)
-          .borderRadius(8)
-          .fontColor(Color.White)
-          .onClick(() => {
-            router.pushUrl({
-              url: item.route
-            })
+      // 按钮
+      Button('开始学习')
+        .fontSize(12)
+        .width('100%')
+        .height(32)
+        .backgroundColor(item.color)
+        .borderRadius(8)
+        .fontColor(Color.White)
+        .onClick(() => {
+          router.pushUrl({
+            url: item.route
           })
-      }
-      .width('100%')
-      .padding(16)
+        })
     }
-    .width('100%')
+    .width('48%')
     .padding(16)
     .backgroundColor(Color.White)
     .borderRadius(12)
     .shadow({ radius: 8, color: '#10000000', offsetX: 0, offsetY: 2 })
-    .margin({ bottom: 8 })
+    .margin({ bottom: 12 })
   }
 }
