@@ -39,6 +39,7 @@
     "pages/NavigatorDemo",
     "pages/AppStorageDemo",
     "pages/PersistentStorageDemo",
-    "pages/PickerDemo"
+    "pages/PickerDemo",
+    "pages/PanelDemo"
   ]
 }

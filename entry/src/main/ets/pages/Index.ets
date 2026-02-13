@@ -197,6 +197,20 @@ struct Index {
             description: 'PersistentStorage',
             route: 'pages/PersistentStorageDemo',
             color: '#13C2C2'
+          },
+          {
+            icon: '🎚',
+            title: '选择器',
+            description: 'Picker/Select',
+            route: 'pages/PickerDemo',
+            color: '#FA541C'
+          },
+          {
+            icon: '📦',
+            title: '半模态面板',
+            description: 'Panel',
+            route: 'pages/PanelDemo',
+            color: '#722ED1'
           }
         ]
       },
