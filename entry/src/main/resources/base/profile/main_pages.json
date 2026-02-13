@@ -35,6 +35,7 @@
     "pages/SwiperDemo",
     "pages/RefreshDemo",
     "pages/LoadingProgressDemo",
-    "pages/ScrollDemo"
+    "pages/ScrollDemo",
+    "pages/NavigatorDemo"
   ]
 }

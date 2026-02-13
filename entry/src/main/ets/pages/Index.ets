@@ -148,6 +148,13 @@ struct Index {
             description: 'Scroll',
             route: 'pages/ScrollDemo',
             color: '#722ED1'
+          },
+          {
+            icon: '🧭',
+            title: '导航组件',
+            description: 'Navigator',
+            route: 'pages/NavigatorDemo',
+            color: '#FA541C'
           }
         ]
       },
