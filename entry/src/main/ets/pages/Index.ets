@@ -239,6 +239,13 @@ struct Index {
             description: 'ActionSheet',
             route: 'pages/ActionSheetDemo',
             color: '#FAAD14'
+          },
+          {
+            icon: '📑',
+            title: '标签页',
+            description: 'Tabs',
+            route: 'pages/TabsDemo',
+            color: '#52C41A'
           }
         ]
       },

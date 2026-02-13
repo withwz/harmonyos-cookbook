@@ -44,6 +44,7 @@
     "pages/BadgeDemo",
     "pages/DividerDemo",
     "pages/BlankDemo",
-    "pages/ActionSheetDemo"
+    "pages/ActionSheetDemo",
+    "pages/TabsDemo"
   ]
 }
