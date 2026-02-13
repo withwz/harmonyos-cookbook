@@ -174,6 +174,49 @@ struct Index {
             .borderRadius(12)
           }
 
+          Row({ space: 12 }) {
+            // 图片与视频组件入口
+            Column({ space: 12 }) {
+              Text('🖼️')
+                .fontSize(32)
+              Text('图片与视频')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+              Text('Image/Video等')
+                .fontSize(12)
+                .fontColor('#999')
+
+              Button('开始学习')
+                .fontSize(12)
+                .width('100%')
+                .onClick(() => {
+                  router.pushUrl({
+                    url: 'pages/MediaDemo'
+                  })
+                })
+            }
+            .layoutWeight(1)
+            .padding(16)
+            .backgroundColor(Color.White)
+            .borderRadius(12)
+
+            // 占位
+            Column({ space: 12 }) {
+              Text('📦')
+                .fontSize(32)
+              Text('更多组件')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+              Text('敬请期待')
+                .fontSize(12)
+                .fontColor('#999')
+            }
+            .layoutWeight(1)
+            .padding(16)
+            .backgroundColor('#F5F5F5')
+            .borderRadius(12)
+          }
+
           // Kit 学习入口
           Column({ space: 12 }) {
             Text('📦')

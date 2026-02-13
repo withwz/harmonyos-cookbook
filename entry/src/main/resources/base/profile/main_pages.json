@@ -22,6 +22,7 @@
     "pages/ImageKitDemo",
     "pages/KitLearningPage",
     "pages/ButtonAndSelectDemo",
-    "pages/TextAndInputDemo"
+    "pages/TextAndInputDemo",
+    "pages/MediaDemo"
   ]
 }
