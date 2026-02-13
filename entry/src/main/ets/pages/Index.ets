@@ -246,6 +246,13 @@ struct Index {
             description: 'Tabs',
             route: 'pages/TabsDemo',
             color: '#52C41A'
+          },
+          {
+            icon: '🔍',
+            title: '搜索框',
+            description: 'Search',
+            route: 'pages/SearchDemo',
+            color: '#007DFF'
           }
         ]
       },
