@@ -43,6 +43,7 @@
     "pages/PanelDemo",
     "pages/BadgeDemo",
     "pages/DividerDemo",
-    "pages/BlankDemo"
+    "pages/BlankDemo",
+    "pages/ActionSheetDemo"
   ]
 }

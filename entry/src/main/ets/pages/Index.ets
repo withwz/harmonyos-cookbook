@@ -232,6 +232,13 @@ struct Index {
             description: 'Blank',
             route: 'pages/BlankDemo',
             color: '#13C2C2'
+          },
+          {
+            icon: '📋',
+            title: '操作列表',
+            description: 'ActionSheet',
+            route: 'pages/ActionSheetDemo',
+            color: '#FAAD14'
           }
         ]
       },
