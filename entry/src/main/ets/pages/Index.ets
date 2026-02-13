@@ -73,6 +73,13 @@ struct Index {
             color: '#FF6B6B'
           },
           {
+            icon: '🎚',
+            title: '选择器',
+            description: 'Picker/Select',
+            route: 'pages/PickerDemo',
+            color: '#FA541C'
+          },
+          {
             icon: '🧭',
             title: '导航与切换',
             description: 'Tabs/TabContent',
