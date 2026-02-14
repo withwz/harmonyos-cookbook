@@ -43,8 +43,7 @@ struct RPCDemo {
   @State inputNum1: string = '10'
   @State inputNum2: string = '20'
   @State inputText: string = 'Hello RPC'
-  @State server: MockRPCServer | null = null
-  @State connectionState: string = '未连接'
+  server: MockRPCServer = new MockRPCServer()
 
   aboutToAppear() {
     this.logs = '页面初始化完成'
@@ -507,7 +506,7 @@ struct RPCDemo {
           }
           .width('100%')
           .padding(12)
-          .backgroundColor('#F8F8F8')
+          .backgroundColor('#E6F7FF')
           .borderRadius(8)
 
           // 应用场景
@@ -555,13 +554,13 @@ struct RPCDemo {
         .fontWeight(FontWeight.Medium)
         .width('100%')
 
-      Text('RPC 连接的完整生命周期')
+      Text('连接状态跟踪与管理')
         .fontSize(14)
         .fontColor('#666')
 
       // 当前连接状态
       Row() {
-        Text('当前状态: ${this.connectionState}')
+        Text(`当前状态: ${this.isConnected ? '已连接' : '未连接'}`)
           .fontSize(16)
           .fontColor('#333')
           .width('100%')
@@ -601,7 +600,7 @@ struct RPCDemo {
         }
         .width('100%')
         .padding(12)
-        .backgroundColor('#E6F7FF')
+        .backgroundColor('#F8F8F8')
         .borderRadius(8)
 
         Column({ space: 4 }) {
@@ -631,6 +630,8 @@ struct RPCDemo {
           .padding(12)
           .backgroundColor('#F8F8F8')
           .borderRadius(8)
+        }
+        .width('100%')
 
         // 异常处理
         Column({ space: 8 }) {
@@ -660,8 +661,8 @@ struct RPCDemo {
           .padding(12)
           .backgroundColor('#E6F7FF')
           .borderRadius(8)
+        }
 
-        // 最佳实践
         Column({ space: 8 }) {
           Text('生命周期最佳实践:')
             .fontSize(14)
@@ -761,7 +762,7 @@ struct RPCDemo {
           .width('100%')
 
         Row({ space: 12 }) {
-          TextInput({ placeholder: '数字1', text: this.inputNum1 })
+          TextInput({ text: this.inputNum1, placeholder: '数字1' })
             .type(InputType.Number)
             .layoutWeight(1)
             .onChange((value: string) => {
@@ -772,7 +773,7 @@ struct RPCDemo {
             .fontSize(20)
             .fontColor('#666')
 
-          TextInput({ placeholder: '数字2', text: this.inputNum2 })
+          TextInput({ text: this.inputNum2, placeholder: '数字2' })
             .type(InputType.Number)
             .layoutWeight(1)
             .onChange((value: string) => {
@@ -799,7 +800,7 @@ struct RPCDemo {
           .width('100%')
 
         Row({ space: 12 }) {
-          TextInput({ placeholder: '输入文本', text: this.inputText })
+          TextInput({ text: this.inputText, placeholder: '输入文本' })
             .layoutWeight(1)
             .onChange((value: string) => {
               this.inputText = value
@@ -814,7 +815,6 @@ struct RPCDemo {
         }
         .width('100%')
       }
-      .width('100%')
 
       // 说明
       Column({ space: 8 }) {
@@ -869,10 +869,12 @@ struct RPCDemo {
             .textAlign(TextAlign.Center)
             .padding(20)
         } else {
-          Text(this.logs)
-            .fontSize(12)
-            .fontColor('#333')
-            .width('100%')
+          ForEach(this.logs.split('\n'), (log: string, index: number) => {
+            Text(log)
+              .fontSize(12)
+              .fontColor('#333')
+              .width('100%')
+          }, (log: string, index: number) => index.toString())
         }
       }
       .width('100%')
@@ -917,9 +919,8 @@ struct RPCDemo {
    */
   connect() {
     this.logs = this.logs + '正在连接 RPC 服务...\n'
-    this.server = new MockRPCServer()
     this.isConnected = true
-    this.connectionState = '已连接'
+    this.logs = this.logs + '连接成功\n'
   }
 
   /**
@@ -929,9 +930,7 @@ struct RPCDemo {
     if (!this.isConnected) {
       return
     }
-    this.server = null
     this.isConnected = false
-    this.connectionState = '未连接'
     this.logs = this.logs + '已断开连接\n'
   }
 
@@ -939,29 +938,29 @@ struct RPCDemo {
    * Ping 测试 (Code 4)
    */
   callPing() {
-    if (!this.server) {
+    if (!this.isConnected) {
       return
     }
     const result = this.server.ping()
-    this.logs = this.logs + `Ping -> ${result}\n`
+    this.logs = this.logs + 'Ping -> ' + result + '\n'
   }
 
   /**
    * 获取服务器时间 (Code 1)
    */
   callGetTime() {
-    if (!this.server) {
+    if (!this.isConnected) {
       return
     }
     const result = this.server.getTime()
-    this.logs = this.logs + `服务器时间: ${result}\n`
+    this.logs = this.logs + '服务器时间: ' + result + '\n'
   }
 
   /**
    * 远程加法 (Code 2)
    */
   callAdd() {
-    if (!this.server) {
+    if (!this.isConnected) {
       return
     }
     const a = parseInt(this.inputNum1)
@@ -973,17 +972,17 @@ struct RPCDemo {
     }
 
     const result = this.server.add(a, b)
-    this.logs = this.logs + `${a} + ${b} = ${result}\n`
+    this.logs = this.logs + a.toString() + ' + ' + b.toString() + ' = ' + result.toString() + '\n'
   }
 
   /**
    * 字符串反转 (Code 3)
    */
   callReverse() {
-    if (!this.server) {
+    if (!this.isConnected) {
       return
     }
     const result = this.server.reverse(this.inputText)
-    this.logs = this.logs + `"${this.inputText}" 反转 -> "${result}"\n`
+    this.logs = this.logs + '"' + this.inputText + '" 反转 -> "' + result + '"\n'
   }
 }
