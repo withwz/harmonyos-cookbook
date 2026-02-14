@@ -61,6 +61,7 @@ struct RPCDemo {
         Column({ space: 20 }) {
           this.ConnectionSection()
           this.ConceptSection()
+          this.MessageSequenceSection()
           this.CallSection()
           this.LogSection()
           this.TipCard('RPC要点：进程间通信机制')
@@ -499,6 +500,114 @@ struct RPCDemo {
       .backgroundColor('#FFF5F5')
       .borderRadius(8)
       .margin({ top: 10 })
+  }
+
+  @Builder
+  MessageSequenceSection() {
+    Column({ space: 12 }) {
+      Text('MessageSequence 数据序列化')
+        .fontSize(18)
+        .fontWeight(FontWeight.Medium)
+        .width('100%')
+
+      Text('RPC 通信中的数据序列化容器')
+        .fontSize(14)
+        .fontColor('#666')
+
+      // 代码示例
+      Column({ space: 8 }) {
+        Text('基本用法:')
+          .fontSize(14)
+          .fontColor('#666')
+          .width('100%')
+
+        Column({ space: 4 }) {
+          Text('创建序列化容器:')
+            .fontSize(12)
+            .fontColor('#999')
+          Text('const sequence = rpc.MessageSequence.create()')
+            .fontSize(11)
+            .fontColor('#007DFF')
+            .fontFamily('monospace')
+            .width('100%')
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(8)
+
+        Column({ space: 4 }) {
+          Text('写入数据:')
+            .fontSize(12)
+            .fontColor('#999')
+          Text('sequence.writeInt(123)')
+            .fontSize(11)
+            .fontColor('#007DFF')
+            .fontFamily('monospace')
+            .width('100%')
+          Text('sequence.writeString("Hello")')
+            .fontSize(11)
+            .fontColor('#007DFF')
+            .fontFamily('monospace')
+            .width('100%')
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(8)
+
+        Column({ space: 4 }) {
+          Text('读取数据:')
+            .fontSize(12)
+            .fontColor('#999')
+          Text('const val = sequence.readInt()')
+            .fontSize(11)
+            .fontColor('#FA541C')
+            .fontFamily('monospace')
+            .width('100%')
+          Text('const str = sequence.readString()')
+            .fontSize(11)
+            .fontColor('#FA541C')
+            .fontFamily('monospace')
+            .width('100%')
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(8)
+
+        // 支持的数据类型
+        Column({ space: 8 }) {
+          Text('支持的数据类型:')
+            .fontSize(14)
+            .fontColor('#666')
+            .width('100%')
+
+          Row({ space: 20 }) {
+            Text('• writeInt / readInt')
+              .fontSize(12)
+              .fontColor('#999')
+            Text('• writeString / readString')
+              .fontSize(12)
+              .fontColor('#999')
+            Text('• writeBoolean / readBoolean')
+              .fontSize(12)
+              .fontColor('#999')
+          }
+          .width('100%')
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#E6F7FF')
+        .borderRadius(8)
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor(Color.White)
+    .borderRadius(12)
+    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
   }
 
   // ==================== RPC 方法 ===================

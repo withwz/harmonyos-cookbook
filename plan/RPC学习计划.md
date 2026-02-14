@@ -37,6 +37,7 @@
 | # | 迭代内容 | 预估时间 | 状态 |
 |---|----------|----------|------|
 | 1 | RPC 基础：SimpleAbility 通信 | 20min | ✅ 完成 |
+| 2 | MessageSequence 数据序列化 | 15min | ⏳ 进行中 |
 | 2 | MessageSequence 数据序列化 | 15min | ⏸️ 待开始 |
 | 3 | 跨设备 RPC 调用 | 20min | ⏸️ 待开始 |
 | 4 | RPC 生命周期管理 | 15min | ⏸️ 待开始 |
