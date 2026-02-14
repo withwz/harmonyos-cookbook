@@ -44,9 +44,10 @@ struct RPCDemo {
   @State inputNum2: string = '20'
   @State inputText: string = 'Hello RPC'
   @State server: MockRPCServer | null = null
+  @State connectionState: string = '未连接'
 
   aboutToAppear() {
-    this.addLog('页面初始化完成')
+    `$1`
   }
 
   build() {
@@ -63,6 +64,7 @@ struct RPCDemo {
           this.ConceptSection()
           this.MessageSequenceSection()
           this.CrossDeviceSection()
+          this.LifecycleSection()
           this.CallSection()
           this.LogSection()
           this.TipCard('RPC要点：进程间通信机制')
@@ -546,6 +548,146 @@ struct RPCDemo {
   }
 
   @Builder
+  LifecycleSection() {
+    Column({ space: 12 }) {
+      Text('RPC 生命周期管理')
+        .fontSize(18)
+        .fontWeight(FontWeight.Medium)
+        .width('100%')
+
+      Text('连接状态跟踪与管理')
+        .fontSize(14)
+        .fontColor('#666')
+
+      // 当前连接状态
+      Row() {
+        Text(`当前状态: ${this.connectionState}`)
+          .fontSize(16)
+          .fontColor('#333')
+          .width('100%')
+          .padding(12)
+          .backgroundColor('#F8F8F8')
+          .borderRadius(8)
+      }
+      .width('100%')
+
+      // 流程图
+      Column({ space: 8 }) {
+        Text('连接建立流程:')
+          .fontSize(14)
+          .fontColor('#666')
+          .width('100%')
+
+        Column({ space: 4 }) {
+          Text('1. 客户端发起连接')
+            .fontSize(12)
+            .fontColor('#999')
+
+          Text('2. 服务端 onConnect() 返回 RemoteObject')
+            .fontSize(12)
+            .fontColor('#999')
+
+          Text('3. 建立代理通道')
+            .fontSize(12)
+            .fontColor('#999')
+
+          Text('4. 开始远程调用')
+            .fontSize(12)
+            .fontColor('#999')
+        }
+        .width('100%')
+        .padding(12)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(8)
+
+        Column({ space: 4 }) {
+          Text('连接断开流程:')
+            .fontSize(14)
+            .fontColor('#666')
+            .width('100%')
+
+          Column({ space: 4 }) {
+            Text('1. 客户端主动断开 disconnectAbility()')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('2. 服务端触发 onDisconnect()')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('3. 释放资源，清理连接')
+              .fontSize(12)
+              .fontColor('#999')
+          }
+          .width('100%')
+          .padding(12)
+          .backgroundColor('#F8F8F8')
+          .borderRadius(8)
+
+        Column({ space: 4 }) {
+          Text('异常处理机制:')
+            .fontSize(14)
+            .fontColor('#666')
+            .width('100%')
+
+          Column({ space: 4 }) {
+            Text('连接失败: 检查网络、权限、服务状态')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('调用超时: 设置合理的超时时间')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('服务异常: 捕获并记录异常日志')
+              .fontSize(12)
+              .fontColor('#999')
+          }
+          .width('100%')
+          .padding(12)
+          .backgroundColor('#E6F7FF')
+          .borderRadius(8)
+
+        Column({ space: 4 }) {
+          Text('生命周期最佳实践:')
+            .fontSize(14)
+            .fontColor('#666')
+            .width('100%')
+
+          Column({ space: 4 }) {
+            Text('及时释放连接: 不用时立即断开')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('监听连接状态: 处理意外断开')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('合理设置超时: 避免长时间等待')
+              .fontSize(12)
+              .fontColor('#999')
+
+            Text('记录详细日志: 方便问题排查')
+              .fontSize(12)
+              .fontColor('#999')
+          }
+          .width('100%')
+          .padding(12)
+          .backgroundColor('#E6F7FF')
+          .borderRadius(8)
+        }
+        .width('100%')
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor(Color.White)
+    .borderRadius(12)
+    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
+  }
+
+  @Builder
   CallSection() {
     Column({ space: 12 }) {
       Text('RPC 调用')
@@ -762,10 +904,11 @@ struct RPCDemo {
    * 连接到 RPC 服务
    */
   connect() {
-    this.addLog('正在连接 RPC 服务...')
+    `$1`
     this.server = new MockRPCServer()
     this.isConnected = true
-    this.addLog('连接成功')
+    this.connectionState = '已连接'
+    `$1`
   }
 
   /**
@@ -777,7 +920,8 @@ struct RPCDemo {
     }
     this.server = null
     this.isConnected = false
-    this.addLog('已断开连接')
+    this.connectionState = '未连接'
+    `$1`
   }
 
   /**
@@ -788,7 +932,7 @@ struct RPCDemo {
       return
     }
     const result = this.server.ping()
-    this.addLog(`Ping -> ${result}`)
+    `$1`
   }
 
   /**
@@ -799,7 +943,7 @@ struct RPCDemo {
       return
     }
     const result = this.server.getTime()
-    this.addLog(`服务器时间: ${result}`)
+    `$1`
   }
 
   /**
@@ -813,12 +957,12 @@ struct RPCDemo {
     const b = parseInt(this.inputNum2)
 
     if (isNaN(a) || isNaN(b)) {
-      this.addLog('请输入有效数字')
+      `$1`
       return
     }
 
     const result = this.server.add(a, b)
-    this.addLog(`${a} + ${b} = ${result}`)
+    `$1`
   }
 
   /**
@@ -829,7 +973,7 @@ struct RPCDemo {
       return
     }
     const result = this.server.reverse(this.inputText)
-    this.addLog(`"${this.inputText}" 反转 -> "${result}"`)
+    `$1`
   }
 
   /**
