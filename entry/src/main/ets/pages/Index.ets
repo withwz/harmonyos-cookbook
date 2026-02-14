@@ -21,7 +21,10 @@ interface CategoryItem {
 @Component
 struct Index {
   @State categories: Array<CategoryItem> = []
-  @State expandedIndex: number = 0
+  @State expandedCategoryName: string = '' // ⭐ 改用 name 作为状态标识
+  @State searchKeyword: string = ''
+  @State filteredCategories: Array<CategoryItem> = []
+  @State isSearching: boolean = false
 
   aboutToAppear() {
     this.categories = [
@@ -300,13 +303,43 @@ struct Index {
         // 顶部标题
         this.Header()
 
+        // 搜索框
+        this.SearchBar()
+
         // 手风琴分类列表
-        Column({ space: 12 }) {
-          ForEach(this.categories, (category: CategoryItem, index: number) => {
-            this.CategoryCard(category, index)
-          }, (category: CategoryItem, index: number) => index.toString())
+        if (this.isSearching) {
+          // 搜索模式：直接显示所有匹配的 Demo
+          Column({ space: 12 }) {
+            ForEach(this.filteredCategories, (category: CategoryItem) => {
+              Column({ space: 8 }) {
+                // 分类标题
+                Text(category.name + ' (' + category.demos.length + ')')
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Medium)
+                  .fontColor('#666')
+                  .width('100%')
+                  .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+                  .backgroundColor('#E8E8E8')
+                  .borderRadius(8)
+
+                // 该分类下的所有匹配 Demo
+                ForEach(category.demos, (demo: DemoItem) => {
+                  this.DemoItemRow(demo)
+                }, (demo: DemoItem) => demo.route)
+              }
+              .width('100%')
+            }, (category: CategoryItem) => category.name)
+          }
+          .width('100%')
+        } else {
+          // 正常模式：手风琴分类列表
+          Column({ space: 12 }) {
+            ForEach(this.categories, (category: CategoryItem, index: number) => {
+              this.CategoryCard(category, index)
+            }, (category: CategoryItem, index: number) => category.name)
+          }
+          .width('100%')
         }
-        .width('100%')
       }
       .width('100%')
       .padding({ left: 16, right: 16, top: 20, bottom: 20 })
@@ -349,7 +382,7 @@ struct Index {
           .margin({ left: 12 })
           .layoutWeight(1)
 
-        Text(this.expandedIndex === index ? '▼' : '▶')
+        Text(this.expandedCategoryName === category.name ? '▼' : '▶')
           .fontSize(14)
           .fontColor('#999')
       }
@@ -359,15 +392,15 @@ struct Index {
       .backgroundColor(category.color)
       .borderRadius(12)
       .onClick(() => {
-        if (this.expandedIndex === index) {
-          this.expandedIndex = -1
+        if (this.expandedCategoryName === category.name) {
+          this.expandedCategoryName = ''
         } else {
-          this.expandedIndex = index
+          this.expandedCategoryName = category.name
         }
       })
 
       // 展开的Demo列表
-      if (this.expandedIndex === index) {
+      if (this.expandedCategoryName === category.name) {
         Column({ space: 8 }) {
           ForEach(category.demos, (demo: DemoItem) => {
             this.DemoItemRow(demo)
@@ -418,5 +451,82 @@ struct Index {
         url: demo.route
       })
     })
+  }
+
+  @Builder
+  SearchBar() {
+    Row({ space: 8 }) {
+      TextInput({ placeholder: '搜索 Demo...', text: $$this.searchKeyword })
+        .layoutWeight(1)
+        .height(40)
+        .padding({ left: 12, right: 12 })
+        .backgroundColor(Color.White)
+        .borderRadius(20)
+        .onChange((value: string) => {
+          this.searchKeyword = value
+          this.onSearch(value)
+        })
+
+      if (this.isSearching) {
+        Button('清空')
+          .height(40)
+          .padding({ left: 16, right: 16 })
+          .backgroundColor('#FF6B6B')
+          .borderRadius(20)
+          .onClick(() => {
+            this.searchKeyword = ''
+            this.isSearching = false
+            this.filteredCategories = []
+            this.expandedCategoryName = ''
+          })
+      }
+    }
+    .width('100%')
+    .padding({ left: 16, right: 16 })
+  }
+
+  onSearch(keyword: string) {
+
+    if (keyword.length === 0) {
+      this.isSearching = false
+      this.filteredCategories = []
+      return
+    }
+
+    this.isSearching = true
+    const result: Array<CategoryItem> = []
+    const lowerKeyword = keyword.toLowerCase()
+
+    for (let i = 0; i < this.categories.length; i++) {
+      const category = this.categories[i]
+      const matchedDemos: Array<DemoItem> = []
+
+      for (let j = 0; j < category.demos.length; j++) {
+        const demo = category.demos[j]
+        const titleMatch = demo.title.toLowerCase().indexOf(lowerKeyword) >= 0
+        const descMatch = demo.description.toLowerCase().indexOf(lowerKeyword) >= 0
+
+        if (titleMatch || descMatch) {
+          matchedDemos.push(demo)
+        }
+      }
+
+      if (matchedDemos.length > 0) {
+        result.push({
+          name: category.name,
+          icon: category.icon,
+          color: category.color,
+          demos: matchedDemos
+        })
+      }
+    }
+
+
+    this.filteredCategories = result
+
+    // 搜索时，展开 filteredCategories 的第一个分类
+    if (result.length > 0) {
+      this.expandedCategoryName = result[0].name
+    }
   }
 }
