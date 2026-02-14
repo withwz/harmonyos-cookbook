@@ -38,7 +38,7 @@ class MockRPCServer implements RPCServiceInterface {
 @Entry
 @Component
 struct RPCDemo {
-  @State logs: Array<string> = []
+  @State logs: string = ''
   @State isConnected: boolean = false
   @State inputNum1: string = '10'
   @State inputNum2: string = '20'
@@ -47,7 +47,7 @@ struct RPCDemo {
   @State connectionState: string = '未连接'
 
   aboutToAppear() {
-    `$1`
+    this.logs = '页面初始化完成'
   }
 
   build() {
@@ -518,15 +518,15 @@ struct RPCDemo {
               .width('100%')
 
             Column({ space: 4 }) {
-              Text('手机 <-> 平板')
+              Text('手机 <--> 平板')
                 .fontSize(12)
                 .fontColor('#999')
 
-              Text('平板 <-> TV')
+              Text('平板 <--> TV')
                 .fontSize(12)
                 .fontColor('#999')
 
-              Text('手表 <-> 手机')
+              Text('手表 <--> 手机')
                 .fontSize(12)
                 .fontColor('#999')
             }
@@ -555,13 +555,13 @@ struct RPCDemo {
         .fontWeight(FontWeight.Medium)
         .width('100%')
 
-      Text('连接状态跟踪与管理')
+      Text('RPC 连接的完整生命周期')
         .fontSize(14)
         .fontColor('#666')
 
       // 当前连接状态
       Row() {
-        Text(`当前状态: ${this.connectionState}`)
+        Text('当前状态: ${this.connectionState}')
           .fontSize(16)
           .fontColor('#333')
           .width('100%')
@@ -591,13 +591,17 @@ struct RPCDemo {
             .fontSize(12)
             .fontColor('#999')
 
-          Text('4. 开始远程调用')
+          Text('4. 客户端获得 Proxy 对象')
+            .fontSize(12)
+            .fontColor('#999')
+
+          Text('5. 开始远程调用')
             .fontSize(12)
             .fontColor('#999')
         }
         .width('100%')
         .padding(12)
-        .backgroundColor('#F8F8F8')
+        .backgroundColor('#E6F7FF')
         .borderRadius(8)
 
         Column({ space: 4 }) {
@@ -618,13 +622,18 @@ struct RPCDemo {
             Text('3. 释放资源，清理连接')
               .fontSize(12)
               .fontColor('#999')
+
+            Text('4. 通知其他端连接已关闭')
+              .fontSize(12)
+              .fontColor('#999')
           }
           .width('100%')
           .padding(12)
           .backgroundColor('#F8F8F8')
           .borderRadius(8)
 
-        Column({ space: 4 }) {
+        // 异常处理
+        Column({ space: 8 }) {
           Text('异常处理机制:')
             .fontSize(14)
             .fontColor('#666')
@@ -642,13 +651,18 @@ struct RPCDemo {
             Text('服务异常: 捕获并记录异常日志')
               .fontSize(12)
               .fontColor('#999')
+
+            Text('重试机制: 失败后自动重连')
+              .fontSize(12)
+              .fontColor('#999')
           }
           .width('100%')
           .padding(12)
           .backgroundColor('#E6F7FF')
           .borderRadius(8)
 
-        Column({ space: 4 }) {
+        // 最佳实践
+        Column({ space: 8 }) {
           Text('生命周期最佳实践:')
             .fontSize(14)
             .fontColor('#666')
@@ -855,12 +869,10 @@ struct RPCDemo {
             .textAlign(TextAlign.Center)
             .padding(20)
         } else {
-          ForEach(this.logs, (log: string, index: number) => {
-            Text(log)
-              .fontSize(12)
-              .fontColor('#333')
-              .width('100%')
-          }, (log: string, index: number) => index.toString())
+          Text(this.logs)
+            .fontSize(12)
+            .fontColor('#333')
+            .width('100%')
         }
       }
       .width('100%')
@@ -876,7 +888,7 @@ struct RPCDemo {
         .backgroundColor('#8E44AD')
         .borderRadius(8)
         .onClick(() => {
-          this.logs = []
+          this.logs = ''
         })
     }
     .width('100%')
@@ -904,11 +916,10 @@ struct RPCDemo {
    * 连接到 RPC 服务
    */
   connect() {
-    `$1`
+    this.logs = this.logs + '正在连接 RPC 服务...\n'
     this.server = new MockRPCServer()
     this.isConnected = true
     this.connectionState = '已连接'
-    `$1`
   }
 
   /**
@@ -921,7 +932,7 @@ struct RPCDemo {
     this.server = null
     this.isConnected = false
     this.connectionState = '未连接'
-    `$1`
+    this.logs = this.logs + '已断开连接\n'
   }
 
   /**
@@ -932,7 +943,7 @@ struct RPCDemo {
       return
     }
     const result = this.server.ping()
-    `$1`
+    this.logs = this.logs + `Ping -> ${result}\n`
   }
 
   /**
@@ -943,7 +954,7 @@ struct RPCDemo {
       return
     }
     const result = this.server.getTime()
-    `$1`
+    this.logs = this.logs + `服务器时间: ${result}\n`
   }
 
   /**
@@ -957,12 +968,12 @@ struct RPCDemo {
     const b = parseInt(this.inputNum2)
 
     if (isNaN(a) || isNaN(b)) {
-      `$1`
+      this.logs = this.logs + '请输入有效数字\n'
       return
     }
 
     const result = this.server.add(a, b)
-    `$1`
+    this.logs = this.logs + `${a} + ${b} = ${result}\n`
   }
 
   /**
@@ -973,19 +984,6 @@ struct RPCDemo {
       return
     }
     const result = this.server.reverse(this.inputText)
-    `$1`
-  }
-
-  /**
-   * 添加日志
-   */
-  addLog(message: string) {
-    const timestamp = new Date().toLocaleTimeString('zh-CN')
-    this.logs.unshift(`[${timestamp}] ${message}`)
-
-    // 限制日志数量
-    if (this.logs.length > 50) {
-      this.logs = this.logs.slice(0, 50)
-    }
+    this.logs = this.logs + `"${this.inputText}" 反转 -> "${result}"\n`
   }
 }
