@@ -35,6 +35,17 @@
             ]
           }
         ]
+      },
+      {
+        "name": "RPCServiceAbility",
+        "srcEntry": "./ets/ability/RPCServiceAbility.ets",
+        "description": "$string:RPCServiceAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:RPCServiceAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "visible": true
       }
     ],
     "extensionAbilities": [

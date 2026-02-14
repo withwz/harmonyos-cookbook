@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "RPCServiceAbility_desc",
+      "value": "RPC Service Ability - 进程间通信服务"
+    },
+    {
+      "name": "RPCServiceAbility_label",
+      "value": "RPC Service"
     }
   ]
 }

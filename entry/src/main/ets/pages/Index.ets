@@ -260,6 +260,13 @@ struct Index {
             description: 'Toggle',
             route: 'pages/ToggleDemo',
             color: '#52C41A'
+          },
+          {
+            icon: '💾',
+            title: '页面状态',
+            description: 'LocalStorage',
+            route: 'pages/LocalStorageDemo',
+            color: '#13C2C2'
           }
         ]
       },
@@ -274,6 +281,13 @@ struct Index {
             description: 'Network/Image',
             route: 'pages/KitLearningPage',
             color: '#6F42C1'
+          },
+          {
+            icon: '🔗',
+            title: 'RPC通信',
+            description: '进程间通信',
+            route: 'pages/RPCDemo',
+            color: '#FA541C'
           }
         ]
       }

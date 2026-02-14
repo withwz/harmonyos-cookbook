@@ -47,6 +47,8 @@
     "pages/ActionSheetDemo",
     "pages/TabsDemo",
     "pages/SearchDemo",
-    "pages/ToggleDemo"
+    "pages/ToggleDemo",
+    "pages/LocalStorageDemo",
+    "pages/RPCDemo"
   ]
 }
